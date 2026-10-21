@@ -11,11 +11,21 @@ makina-webside/
 │
 ├── public/               # Archivos estáticos accesibles por el navegador
 │   ├── css/              # Hojas de estilo (.css)
+│   │   ├── login.css     # Estilos de la vista de login
+│   │   └── main.css      # Estilos base (React)
+│   ├── img/              # Imagenes del sitio (se sirven en /img/...)
+│   │   ├── logo_fondo_amarillo.png
+│   │   └── logo_fondo_negro.png
 │   ├── js/               # Scripts de JavaScript para el cliente/navegador
-│   │   ├── main.jsx      # Punto de entrada de React
-│   │   └── dist/         # Build generado por Vite (app.js, app.css, index.html)
+│   │   ├── main.jsx      # Punto de entrada de React (monta en #root)
+│   │   ├── App.jsx       # Componente raíz
+│   │   ├── components/   # Componentes reutilizables
+│   │   │   └── Icons.jsx # Iconos SVG
+│   │   ├── pages/        # Vistas escritas en React
+│   │   │   └── Login.jsx # Vista de login
+│   │   └── dist/         # Build generado por Vite (login.html, app.js, app.css)
 │   └── views/            # Vistas/Plantillas HTML
-│       └── index.html
+│       └── login.html
 │
 ├── src/                  # Código fuente del servidor (Backend)
 │   ├── config/           # Configuración de base de datos o variables

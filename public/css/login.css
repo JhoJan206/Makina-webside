@@ -1,0 +1,183 @@
+/* Reset basico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* La pagina ocupa toda la pantalla y se divide en dos columnas */
+body {
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Columna izquierda amarilla con el logo */
+.izquierda {
+  width: 37%;
+  background: #FFC91B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+/* Cuadro negro del logo */
+.logo {
+  width: 220px;
+  height: 220px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.izquierda h1 {
+  font-size: 36px;
+  color: #000;
+}
+
+/* Columna derecha blanca con la tarjeta */
+.derecha {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjeta gris del formulario */
+.tarjeta {
+  width: 380px;
+  background: #D9D9D9;
+  border-radius: 14px;
+  padding: 50px 50px 45px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+/* Caja de cada campo, con icono y input */
+.campo {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-bottom: 30px;
+}
+
+.campo span {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.campo svg {
+  width: 17px;
+  height: 17px;
+}
+
+.campo input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+  background: transparent;
+}
+
+/* Boton oscuro */
+button {
+  display: block;
+  width: 100%;
+  background: #262626;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.registro {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 28px;
+}
+
+/* Version celular, las columnas pasan a ser una arriba y otra abajo */
+@media screen and (max-width: 700px) {
+
+  #root {
+    flex-direction: column;
+  }
+
+  /* Franja amarilla de arriba solo con el logo */
+  .izquierda {
+    width: 100%;
+    height: 250px;
+    flex: none;
+  }
+
+  /* El texto Bienvenido no se muestra en celular */
+  .izquierda h1 {
+    display: none;
+  }
+
+  /* Logo mas pequeño y con esquinas redondeadas */
+  .logo {
+    width: 160px;
+    height: 160px;
+    border-radius: 14px;
+  }
+
+  /* El formulario queda centrado verticalmente en la columna blanca */
+  .derecha {
+    align-items: center;
+  }
+
+  /* La tarjeta se centra y los elementos del form quedan centrados */
+  .tarjeta {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: transparent;
+    padding: 35px 24px;
+  }
+
+  label {
+    text-align: center;
+  }
+
+  .campo,
+  button {
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .registro {
+    font-size: 11px;
+    margin-top: 40px;
+  }
+}

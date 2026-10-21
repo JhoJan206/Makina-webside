@@ -39,9 +39,9 @@ if (isDev) {
     appType: 'spa',
   });
 
-  // "/" -> vista principal
+  // "/" -> vista de login
   app.use((req, res, next) => {
-    if (req.url === '/') req.url = '/views/index.html';
+    if (req.url === '/') req.url = '/views/login.html';
     next();
   });
 
@@ -52,7 +52,7 @@ if (isDev) {
   app.use(express.static(PUBLIC_DIR));
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(DIST_DIR, 'index.html'), (err) => {
+    res.sendFile(path.join(DIST_DIR, 'login.html'), (err) => {
       if (err) {
         res.status(404).send('Ejecuta "npm run build" para generar el frontend.');
       }

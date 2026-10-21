@@ -15,7 +15,7 @@ export default defineConfig(({ command }) => {
       outDir: isDev ? 'js/dist' : '../js/dist',
       emptyOutDir: true,
       rollupOptions: {
-        input: isDev ? 'views/index.html' : 'index.html',
+        input: isDev ? 'views/login.html' : 'login.html',
         output: {
           entryFileNames: 'app.js',
           assetFileNames: 'app.[ext]',
