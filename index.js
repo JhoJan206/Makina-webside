@@ -39,9 +39,24 @@ if (isDev) {
     appType: 'spa',
   });
 
-  // "/" -> vista de login
+  // Rutas amigables -> vistas HTML
   app.use((req, res, next) => {
-    if (req.url === '/') req.url = '/views/login.html';
+    const ruta = req.url.split('?')[0];
+
+    if (ruta === '/' || ruta === '/login') {
+      req.url = '/views/login.html';
+    } else if (ruta === '/home' || ruta === '/dashboard') {
+      req.url = '/views/home.html';
+    } else if (ruta === '/maquinaria') {
+      req.url = '/views/maquinaria.html';
+    } else if (ruta.startsWith('/maquinaria/')) {
+      req.url = '/views/maquina.html';
+    } else if (ruta === '/operadores') {
+      req.url = '/views/operadores.html';
+    } else if (ruta.startsWith('/operador/')) {
+      req.url = '/views/operador.html';
+    }
+
     next();
   });
 
@@ -51,13 +66,20 @@ if (isDev) {
   app.use(express.static(DIST_DIR));
   app.use(express.static(PUBLIC_DIR));
 
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(DIST_DIR, 'login.html'), (err) => {
+  const enviarVista = (archivo, res) => {
+    res.sendFile(path.join(DIST_DIR, archivo), (err) => {
       if (err) {
         res.status(404).send('Ejecuta "npm run build" para generar el frontend.');
       }
     });
-  });
+  };
+
+  app.get(['/', '/login'], (req, res) => enviarVista('login.html', res));
+  app.get(['/home', '/dashboard'], (req, res) => enviarVista('home.html', res));
+  app.get(['/maquinaria'], (req, res) => enviarVista('maquinaria.html', res));
+  app.get(['/maquinaria/:id'], (req, res) => enviarVista('maquina.html', res));
+  app.get(['/operadores'], (req, res) => enviarVista('operadores.html', res));
+  app.get(['/operador/:id'], (req, res) => enviarVista('operador.html', res));
 }
 
 server.listen(PORT, () => {

@@ -1,0 +1,268 @@
+/* ===== Página de maquinaria ===== */
+.pagina-maquinaria .dashboard-principal {
+  background: var(--fondo);
+}
+
+.maquinaria-contenido {
+  max-width: 1000px;
+  padding: 40px 32px 56px;
+}
+
+.lista-maquinas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tarjeta-maquina {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-height: 220px;
+  padding: 24px;
+  background: var(--blanco);
+  border: 1px solid var(--borde-tarjeta);
+  border-radius: 16px;
+  box-shadow: var(--sombra-tarjeta);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.tarjeta-maquina:hover {
+  border-color: #d9d9d3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 18px 40px rgba(0, 0, 0, 0.055);
+  transform: translateY(-2px);
+}
+
+.maquina-foto {
+  flex: none;
+  width: 220px;
+  height: 160px;
+  overflow: hidden;
+  background: #f0f0ee;
+  border-radius: 12px;
+}
+
+.maquina-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.tarjeta-maquina:hover .maquina-foto img {
+  transform: scale(1.04);
+}
+
+.maquina-cuerpo {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.maquina-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.maquina-titulo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+}
+
+.maquina-id {
+  color: #191919;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+
+.maquina-tipo {
+  color: #7c7c7c;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.boton-mas {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  height: 34px;
+  padding: 0 18px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--negro);
+  border: 1.5px solid var(--negro);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.12s ease;
+}
+
+.boton-mas:hover {
+  color: var(--negro);
+  background: var(--amarillo);
+  border-color: var(--amarillo);
+}
+
+.boton-mas:active {
+  transform: translateY(1px);
+}
+
+.boton-mas:focus-visible {
+  outline: 3px solid rgba(240, 180, 0, 0.35);
+  outline-offset: 2px;
+}
+
+.maquina-datos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 28px;
+  margin: 0;
+}
+
+.dato {
+  min-width: 0;
+}
+
+.dato dt {
+  margin-bottom: 4px;
+  color: #9a9a9a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.55px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.dato dd {
+  margin: 0;
+  color: #222;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .tarjeta-maquina {
+    gap: 20px;
+    min-height: 200px;
+    padding: 20px;
+  }
+
+  .maquina-foto {
+    width: 170px;
+    height: 128px;
+  }
+
+  .maquina-cuerpo {
+    gap: 18px;
+  }
+
+  .maquina-id {
+    font-size: 21px;
+  }
+
+  .maquina-datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px 22px;
+  }
+}
+
+@media (max-width: 680px) {
+  .maquinaria-contenido {
+    max-width: none;
+    padding: 20px 16px calc(64px + 26px);
+  }
+
+  .lista-maquinas {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    gap: 16px;
+  }
+
+  .tarjeta-maquina {
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 0;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .maquina-foto {
+    width: 112px;
+    height: 96px;
+    border-radius: 9px;
+  }
+
+  .maquina-cuerpo {
+    gap: 12px;
+  }
+
+  .maquina-cabecera {
+    gap: 8px;
+  }
+
+  .maquina-titulo {
+    gap: 8px;
+  }
+
+  .maquina-id {
+    font-size: 18px;
+  }
+
+  .maquina-tipo {
+    font-size: 12px;
+  }
+
+  .maquina-datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+  }
+
+  .dato dt {
+    font-size: 9px;
+    letter-spacing: 0.3px;
+  }
+
+  .dato dd {
+    font-size: 12px;
+  }
+
+  .boton-mas {
+    min-width: 64px;
+    height: 30px;
+    margin-left: auto;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .tarjeta-maquina {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .maquina-foto {
+    width: 100%;
+    height: 150px;
+  }
+}

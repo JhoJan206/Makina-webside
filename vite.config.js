@@ -6,7 +6,7 @@ export default defineConfig(({ command }) => {
 
   return {
     // En desarrollo la raíz es public/ para que /js y /css se sirvan tal cual.
-    // En build la raíz es public/views (el HTML de entrada).
+    // En build la raíz es public/views (los HTML de entrada).
     root: isDev ? 'public' : 'public/views',
     publicDir: false,
     plugins: [react()],
@@ -15,17 +15,29 @@ export default defineConfig(({ command }) => {
       outDir: isDev ? 'js/dist' : '../js/dist',
       emptyOutDir: true,
       rollupOptions: {
-        input: isDev ? 'views/login.html' : 'login.html',
-        output: {
-          entryFileNames: 'app.js',
-          assetFileNames: 'app.[ext]',
-        },
+        input: isDev
+          ? [
+              'views/login.html',
+              'views/home.html',
+              'views/maquinaria.html',
+              'views/maquina.html',
+              'views/operadores.html',
+              'views/operador.html',
+            ]
+          : [
+              'login.html',
+              'home.html',
+              'maquinaria.html',
+              'maquina.html',
+              'operadores.html',
+              'operador.html',
+            ],
       },
     },
 
     server: {
       port: 5173,
-      open: '/views/index.html',
+      open: false,
       proxy: {
         '/api': 'http://localhost:3000',
       },

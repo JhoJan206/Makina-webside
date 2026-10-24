@@ -1,142 +1,291 @@
+:root {
+  --amarillo: #ffc91b;
+  --amarillo-claro: #ffd84d;
+  --negro: #111111;
+  --texto: #1a1a1a;
+  --gris: #6e6e6e;
+  --gris-tenue: #a8a8a3;
+  --fondo: #f7f7f5;
+  --tarjeta: #f1f1ee;
+  --borde: #e2e2de;
+  --fuente: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
 /* Reset basico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: var(--fuente);
 }
 
 /* La pagina ocupa toda la pantalla y se divide en dos columnas */
 body {
   min-height: 100vh;
+  background: var(--fondo);
+  color: var(--texto);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
   display: flex;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* Columna izquierda amarilla con el logo */
 .izquierda {
-  width: 37%;
-  background: #FFC91B;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 44px;
+  width: 37%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 25% 18%, rgba(255, 255, 255, 0.28), transparent 45%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.028) 0 1px,
+      transparent 1px 16px
+    ),
+    linear-gradient(155deg, var(--amarillo-claro) 0%, var(--amarillo) 52%, #f3b600 100%);
+}
+
+/* Circulos decorativos del fondo */
+.izquierda::before {
+  content: "";
+  position: absolute;
+  bottom: -190px;
+  left: -180px;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+}
+
+.izquierda::after {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -100px;
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
 }
 
 /* Cuadro negro del logo */
 .logo {
-  width: 220px;
-  height: 220px;
-  background: #000;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 220px;
+  height: 220px;
   overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 30px 60px rgba(0, 0, 0, 0.26);
 }
 
 .logo img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block;
 }
 
 .izquierda h1 {
-  font-size: 36px;
-  color: #000;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 18px;
+  color: var(--negro);
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
 }
 
-/* Columna derecha blanca con la tarjeta */
+/* Pequeno acento debajo del titulo */
+.izquierda h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 42px;
+  height: 3px;
+  background: var(--negro);
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+/* Columna derecha con la tarjeta */
 .derecha {
-  flex: 1;
-  background: #fff;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
+  padding: 40px;
+  background:
+    radial-gradient(circle at 82% 18%, #ffffff 0%, transparent 52%),
+    var(--fondo);
 }
 
 /* Tarjeta gris del formulario */
 .tarjeta {
-  width: 380px;
-  background: #D9D9D9;
-  border-radius: 14px;
-  padding: 50px 50px 45px;
+  width: 400px;
+  padding: 48px 44px 38px;
+  background: var(--tarjeta);
+  border: 1px solid #e8e8e4;
+  border-radius: 22px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.03),
+    0 30px 60px rgba(0, 0, 0, 0.08);
 }
 
 label {
   display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  color: var(--gris);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
 }
 
 /* Caja de cada campo, con icono y input */
 .campo {
   display: flex;
   align-items: center;
+  margin-bottom: 22px;
+  padding: 12px 14px;
   background: #fff;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin-bottom: 30px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.campo:focus-within {
+  border-color: var(--amarillo);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 201, 27, 0.16);
 }
 
 .campo span {
-  margin-right: 10px;
   display: flex;
   align-items: center;
-  color: #333;
+  margin-right: 12px;
+  color: #9a9a96;
+  transition: color 0.18s ease;
+}
+
+.campo:focus-within span {
+  color: var(--negro);
 }
 
 .campo svg {
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
 }
 
 .campo input {
+  width: 100%;
+  padding: 0;
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  background: transparent;
   border: none;
   outline: none;
-  width: 100%;
-  font-size: 13px;
-  background: transparent;
+}
+
+.campo input::placeholder {
+  color: var(--gris-tenue);
+}
+
+.campo input:-webkit-autofill {
+  -webkit-text-fill-color: var(--texto);
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
 }
 
 /* Boton oscuro */
 button {
   display: block;
   width: 100%;
-  background: #262626;
+  margin-top: 6px;
+  padding: 14px;
   color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  background: var(--negro);
   border: none;
-  border-radius: 4px;
-  padding: 9px;
-  font-size: 13px;
-  font-weight: bold;
-  margin-top: 5px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+button:hover {
+  color: var(--negro);
+  background: var(--amarillo);
+  box-shadow: 0 12px 24px rgba(255, 201, 27, 0.38);
+  transform: translateY(-1px);
+}
+
+button:active {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
+  transform: translateY(0);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(255, 201, 27, 0.55);
+  outline-offset: 2px;
 }
 
 .registro {
+  margin-top: 22px;
+  color: var(--gris);
+  font-size: 12px;
   text-align: center;
-  font-size: 13px;
-  margin-top: 28px;
 }
 
-/* Version celular, las columnas pasan a ser una arriba y otra abajo */
-@media screen and (max-width: 700px) {
+.registro a {
+  color: var(--negro);
+  font-weight: 700;
+}
 
+/* Version celular: una columna con banda amarilla arriba */
+@media screen and (max-width: 700px) {
   #root {
     flex-direction: column;
   }
 
   /* Franja amarilla de arriba solo con el logo */
   .izquierda {
+    flex: none;
     width: 100%;
     height: 250px;
-    flex: none;
+    gap: 0;
   }
 
   /* El texto Bienvenido no se muestra en celular */
@@ -144,25 +293,31 @@ button {
     display: none;
   }
 
-  /* Logo mas pequeño y con esquinas redondeadas */
+  /* Logo mas pequeno y con esquinas redondeadas */
   .logo {
     width: 160px;
     height: 160px;
-    border-radius: 14px;
+    border-radius: 20px;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.04),
+      0 22px 44px rgba(0, 0, 0, 0.24);
   }
 
-  /* El formulario queda centrado verticalmente en la columna blanca */
+  /* El formulario queda centrado vertical y horizontalmente */
   .derecha {
     align-items: center;
+    padding: 32px 20px;
   }
 
-  /* La tarjeta se centra y los elementos del form quedan centrados */
   .tarjeta {
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
+    margin: auto;
+    padding: 8px 4px;
     background: transparent;
-    padding: 35px 24px;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   label {
@@ -172,12 +327,27 @@ button {
   .campo,
   button {
     max-width: 320px;
-    margin-left: auto;
     margin-right: auto;
+    margin-left: auto;
   }
 
   .registro {
+    margin-top: 32px;
     font-size: 11px;
-    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .izquierda {
+    height: 220px;
+  }
+
+  .logo {
+    width: 140px;
+    height: 140px;
+  }
+
+  .derecha {
+    padding: 28px 16px;
   }
 }

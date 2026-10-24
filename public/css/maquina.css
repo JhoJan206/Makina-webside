@@ -1,0 +1,428 @@
+/* ===== Detalle de máquina ===== */
+.pagina-maquina .dashboard-principal {
+  background: var(--fondo);
+}
+
+.maquina-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 1320px;
+  padding: 28px 32px 56px;
+}
+
+/* Resumen superior */
+.maquina-resumen {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 84px;
+  padding: 16px 22px;
+  border-left: 4px solid var(--amarillo);
+}
+
+.maquina-resumen-icono {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  color: #8a6d00;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  background: linear-gradient(145deg, #fff8e0 0%, #fbeec4 100%);
+  border: 1px solid #f1dfa6;
+  border-radius: 14px;
+}
+
+.maquina-resumen-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.maquina-resumen h1 {
+  color: #191919;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.maquina-resumen-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 8px;
+  margin-top: 5px;
+  color: #9a9a9a;
+  font-size: 12px;
+}
+
+.maquina-resumen-meta strong {
+  color: #555;
+  font-weight: 600;
+}
+
+.maquina-resumen-meta .separador {
+  color: #cfcfcf;
+}
+
+.maquina-resumen-valor {
+  margin-left: 10px;
+  color: #555;
+}
+
+.maquina-resumen-operador {
+  margin-top: 3px;
+  color: #9a9a9a;
+  font-size: 12px;
+}
+
+.maquina-resumen-operador strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* KPIs */
+.kpis-detalle {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.kpis-detalle .kpi {
+  min-height: 78px;
+}
+
+/* Registros e historial */
+.detalle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 18px;
+}
+
+.panel-registros,
+.panel-operadores {
+  overflow: hidden;
+}
+
+.panel-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 18px;
+  background: #fcfcfa;
+  border-bottom: 1px solid var(--borde-suave);
+}
+
+.panel-cabecera h2 {
+  color: #222;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+}
+
+.panel-cabecera-registros {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 15px 18px 11px;
+  border-bottom: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  padding: 5px 13px;
+  color: #8a8a8a;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.tab:hover {
+  background: #f2f2f2;
+}
+
+.tab.activo {
+  color: #6b5200;
+  background: #fbe7a1;
+  box-shadow: inset 0 0 0 1px #f0d47c;
+}
+
+.tab.activo:hover {
+  background: #fbe7a1;
+}
+
+.tabla-registros {
+  padding: 0 18px 4px;
+  border-top: 1px solid var(--borde-suave);
+}
+
+.tabla-fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.2fr) 62px 84px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f2f2f2;
+  transition: background 0.15s ease;
+}
+
+.tabla-fila:hover {
+  background: #fafaf7;
+}
+
+.tabla-fila:last-child {
+  border-bottom: 0;
+}
+
+.tabla-encabezado {
+  padding: 10px 0;
+  color: #9a9a9a;
+  font-size: 10px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--borde-suave);
+}
+
+.tabla-encabezado:hover {
+  background: transparent;
+}
+
+.tabla-descripcion {
+  color: #222;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tabla-cliente,
+.tabla-maquina,
+.tabla-fecha {
+  overflow: hidden;
+  color: #9a9a9a;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabla-valor {
+  color: #222;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.tabla-valor.verde {
+  color: var(--verde);
+}
+
+.tabla-valor.rojo {
+  color: var(--rojo);
+}
+
+.tabla-vacia {
+  padding: 22px 0;
+  color: #9a9a9a;
+  font-size: 12px;
+  text-align: center;
+}
+
+.lista-operadores {
+  padding: 4px 18px;
+}
+
+.operador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.operador:last-child {
+  border-bottom: 0;
+}
+
+.operador-avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #6b5200;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  background: #f7edd0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.operador-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.operador-nombre {
+  color: #222;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.operador-fecha {
+  margin-top: 2px;
+  color: #a0a0a0;
+  font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+  .detalle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 880px) {
+  .kpis-detalle {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .maquina-contenido {
+    gap: 12px;
+    padding: 20px 16px calc(64px + 26px);
+  }
+
+  .maquina-resumen {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px;
+    border-left-width: 3px;
+  }
+
+  .maquina-resumen-icono {
+    width: 44px;
+    height: 44px;
+    font-size: 12px;
+    border-radius: 11px;
+  }
+
+  .maquina-resumen h1 {
+    font-size: 16px;
+  }
+
+  .maquina-resumen-meta {
+    font-size: 11px;
+  }
+
+  .maquina-resumen-operador {
+    font-size: 11px;
+  }
+
+  .kpis-detalle {
+    gap: 10px;
+  }
+
+  .kpis-detalle .kpi {
+    min-height: 64px;
+    padding: 12px 12px 10px;
+  }
+
+  .kpis-detalle .kpi-valor {
+    font-size: 18px;
+  }
+
+  .kpis-detalle .kpi-etiqueta {
+    font-size: 11px;
+  }
+
+  .panel-cabecera {
+    padding: 0 12px;
+  }
+
+  .panel-cabecera-registros {
+    padding: 12px 12px 8px;
+  }
+
+  .tabla-registros {
+    padding: 0 12px 2px;
+  }
+
+  .tabla-fila {
+    grid-template-columns: minmax(0, 1fr) 58px 76px;
+    gap: 8px;
+  }
+
+  .tabla-encabezado {
+    font-size: 9px;
+  }
+
+  .col-cliente {
+    display: none;
+  }
+
+  .tabla-descripcion {
+    font-size: 12px;
+  }
+
+  .tabla-fecha {
+    font-size: 10px;
+  }
+
+  .tabla-valor {
+    font-size: 11px;
+  }
+
+  .lista-operadores {
+    padding: 2px 12px;
+  }
+
+  .operador {
+    padding: 11px 0;
+  }
+
+  .grafico-cuerpo {
+    padding: 14px 12px 10px;
+  }
+
+  .grafico-area {
+    height: 170px;
+  }
+}
+
+@media (max-width: 360px) {
+  .tabla-fila {
+    grid-template-columns: minmax(0, 1fr) 50px 68px;
+    gap: 6px;
+  }
+
+  .tabla-descripcion {
+    font-size: 11px;
+  }
+
+  .tabla-valor {
+    font-size: 10px;
+  }
+
+  .tab {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}

@@ -1,4 +1,4 @@
-import { LockIcon, MailIcon, UserIcon } from '../components/Icons.jsx';
+import { LockIcon, MailIcon, UserIcon,  } from '../components/Icons.jsx';
 
 export default function Login() {
   // Aqui se conectara el POST /api/login cuando exista

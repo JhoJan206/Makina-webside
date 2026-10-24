@@ -1,0 +1,267 @@
+/* ===== Página de operadores ===== */
+.pagina-operadores .dashboard-principal {
+  background: var(--fondo);
+}
+
+.operadores-contenido {
+  max-width: 1000px;
+  padding: 40px 32px 56px;
+}
+
+.lista-operadores {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tarjeta-operador {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-height: 220px;
+  padding: 24px;
+  background: var(--blanco);
+  border: 1px solid var(--borde-tarjeta);
+  border-radius: 16px;
+  box-shadow: var(--sombra-tarjeta);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.tarjeta-operador:hover {
+  border-color: #d9d9d3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 18px 40px rgba(0, 0, 0, 0.055);
+  transform: translateY(-2px);
+}
+
+.operador-foto {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 160px;
+  color: #6b5200;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(145deg, #fff3c4 0%, #ffd95c 100%);
+  border: 1px solid #f1d37a;
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.operador-cuerpo {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.operador-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.operador-titulo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+}
+
+.operador-nombre {
+  color: #191919;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+
+.operador-cedula {
+  color: #7c7c7c;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+
+.boton-mas {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  height: 34px;
+  padding: 0 18px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--negro);
+  border: 1.5px solid var(--negro);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.12s ease;
+}
+
+.boton-mas:hover {
+  color: var(--negro);
+  background: var(--amarillo);
+  border-color: var(--amarillo);
+}
+
+.boton-mas:active {
+  transform: translateY(1px);
+}
+
+.boton-mas:focus-visible {
+  outline: 3px solid rgba(240, 180, 0, 0.35);
+  outline-offset: 2px;
+}
+
+.operador-datos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 28px;
+  margin: 0;
+}
+
+.dato {
+  min-width: 0;
+}
+
+.dato dt {
+  margin-bottom: 4px;
+  color: #9a9a9a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.55px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.dato dd {
+  margin: 0;
+  color: #222;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .tarjeta-operador {
+    gap: 20px;
+    min-height: 200px;
+    padding: 20px;
+  }
+
+  .operador-foto {
+    width: 112px;
+    height: 128px;
+    font-size: 30px;
+  }
+
+  .operador-cuerpo {
+    gap: 18px;
+  }
+
+  .operador-nombre {
+    font-size: 21px;
+  }
+
+  .operador-datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px 22px;
+  }
+}
+
+@media (max-width: 680px) {
+  .operadores-contenido {
+    max-width: none;
+    padding: 20px 16px calc(64px + 26px);
+  }
+
+  .lista-operadores {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    gap: 16px;
+  }
+
+  .tarjeta-operador {
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 0;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .operador-foto {
+    width: 92px;
+    height: 104px;
+    font-size: 24px;
+    border-radius: 11px;
+  }
+
+  .operador-cuerpo {
+    gap: 12px;
+  }
+
+  .operador-cabecera {
+    gap: 8px;
+  }
+
+  .operador-titulo {
+    gap: 8px;
+  }
+
+  .operador-nombre {
+    font-size: 18px;
+  }
+
+  .operador-cedula {
+    font-size: 11px;
+  }
+
+  .operador-datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+  }
+
+  .dato dt {
+    font-size: 9px;
+    letter-spacing: 0.3px;
+  }
+
+  .dato dd {
+    font-size: 12px;
+  }
+
+  .boton-mas {
+    min-width: 64px;
+    height: 30px;
+    margin-left: auto;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .tarjeta-operador {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .operador-foto {
+    width: 100%;
+    height: 120px;
+  }
+}
