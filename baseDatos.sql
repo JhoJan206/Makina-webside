@@ -60,3 +60,23 @@ CREATE TABLE egresos (
   created_at   TIMESTAMP DEFAULT NOW(),
   updated_at   TIMESTAMP DEFAULT NOW()
 );
+
+CREATE TYPE estado_solicitud AS ENUM (
+  'Pendiente',
+  'Contactado',
+  'Aprobada',
+  'Rechazada',
+  'Completada'
+);
+
+CREATE TABLE solicitudes (
+  id_solicitud     SERIAL PRIMARY KEY,
+  id_cliente       INT             NOT NULL REFERENCES clientes(id_cliente),
+  tipo_maquina     tipo_maquina    NOT NULL,
+  fecha_requerida  DATE            NOT NULL,
+  horas_estimadas  NUMERIC(8, 2)   NOT NULL,
+  descripcion      TEXT,
+  estado           estado_solicitud NOT NULL DEFAULT 'Pendiente',
+  created_at       TIMESTAMP DEFAULT NOW(),
+  updated_at       TIMESTAMP DEFAULT NOW()
+);

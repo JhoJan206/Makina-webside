@@ -420,3 +420,84 @@ export function registrosOperador(idOperador) {
       )?.placa ?? '—',
   }));
 }
+
+export function tipoMaquinaVisible(tipo) {
+  return tipo === 'Pajarita' ? 'Retroexcavadora' : tipo;
+}
+
+export function telefonoEnlace(telefono) {
+  return `tel:${String(telefono ?? '').replace(/[^\d+]/g, '')}`;
+}
+
+export function promedioValorHora() {
+  if (maquinas.length === 0) return 0;
+
+  return Math.round(
+    maquinas.reduce((total, maquina) => total + maquina.valor_hora, 0) /
+      maquinas.length,
+  );
+}
+
+export function resumenGeneral() {
+  const ingresosPeriodo = ingresos.filter((ingreso) =>
+    ingreso.fecha.startsWith(PERIODO),
+  );
+  const egresosPeriodo = egresos.filter((egreso) =>
+    egreso.fecha.startsWith(PERIODO),
+  );
+
+  const totalIngresos = ingresosPeriodo.reduce(
+    (total, ingreso) => total + ingreso.valor_ingreso,
+    0,
+  );
+  const totalEgresos = egresosPeriodo.reduce(
+    (total, egreso) => total + egreso.valor_egreso,
+    0,
+  );
+  const horas = ingresosPeriodo.reduce(
+    (total, ingreso) => total + ingreso.horas,
+    0,
+  );
+
+  return {
+    ingresos: totalIngresos,
+    egresos: totalEgresos,
+    ganancia: totalIngresos - totalEgresos,
+    horas,
+    maquinas: maquinas.length,
+  };
+}
+
+export function ultimosRegistros(limite = 5) {
+  const registros = [
+    ...ingresos.map((ingreso) => ({
+      id: `ingreso-${ingreso.id_ingreso}`,
+      tipo: 'ingreso',
+      fecha: ingreso.fecha,
+      descripcion: ingreso.descripcion || 'Ingreso',
+      valor: ingreso.valor_ingreso,
+      cliente:
+        clientes.find(
+          (cliente) => cliente.id_cliente === ingreso.id_cliente,
+        )?.nombre_obra ?? '—',
+      maquina:
+        maquinas.find(
+          (maquina) => maquina.id_maquina === ingreso.id_maquina,
+        )?.placa ?? '—',
+    })),
+    ...egresos.map((egreso) => ({
+      id: `egreso-${egreso.id_egreso}`,
+      tipo: 'egreso',
+      fecha: egreso.fecha,
+      descripcion: egreso.descripcion || 'Egreso',
+      valor: egreso.valor_egreso,
+      cliente: '—',
+      maquina:
+        maquinas.find(
+          (maquina) => maquina.id_maquina === egreso.id_maquina,
+        )?.placa ?? '—',
+    })),
+  ].sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+  return registros.slice(0, limite);
+}

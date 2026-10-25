@@ -55,6 +55,12 @@ if (isDev) {
       req.url = '/views/operadores.html';
     } else if (ruta.startsWith('/operador/')) {
       req.url = '/views/operador.html';
+    } else if (ruta === '/solicitar') {
+      req.url = '/views/solicitar.html';
+    } else if (ruta === '/solicitudes') {
+      req.url = '/views/solicitudes.html';
+    } else if (ruta.startsWith('/solicitud/')) {
+      req.url = '/views/solicitud.html';
     }
 
     next();
@@ -80,6 +86,9 @@ if (isDev) {
   app.get(['/maquinaria/:id'], (req, res) => enviarVista('maquina.html', res));
   app.get(['/operadores'], (req, res) => enviarVista('operadores.html', res));
   app.get(['/operador/:id'], (req, res) => enviarVista('operador.html', res));
+  app.get(['/solicitar'], (req, res) => enviarVista('solicitar.html', res));
+  app.get(['/solicitudes'], (req, res) => enviarVista('solicitudes.html', res));
+  app.get(['/solicitud/:id'], (req, res) => enviarVista('solicitud.html', res));
 }
 
 server.listen(PORT, () => {

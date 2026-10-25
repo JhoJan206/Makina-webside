@@ -10,8 +10,12 @@ const datos = [
 export default function Chart() {
   return (
     <section className="tarjeta grafico">
-      <header className="tarjeta-cabecera">
-        <h2>Ingresos vs egresos</h2>
+      <header className="grafico-cabecera">
+        <div>
+          <p className="panel-eyebrow">Rendimiento</p>
+          <h2>Ingresos vs egresos</h2>
+          <p className="panel-sub">Comparativo de los últimos 6 meses</p>
+        </div>
 
         <div className="leyenda">
           <span>
@@ -36,14 +40,15 @@ export default function Chart() {
                   <span
                     className="barra verde"
                     style={{ height: `${ingresos}%` }}
-                    title={`Ingresos ${mes}: ${ingresos}%`}
+                    title={`Ingresos ${mes}: ${ingresos}`}
                   />
                   <span
                     className="barra roja"
                     style={{ height: `${egresos}%` }}
-                    title={`Egresos ${mes}: ${egresos}%`}
+                    title={`Egresos ${mes}: ${egresos}`}
                   />
                 </div>
+
                 <span className="mes">{mes}</span>
               </div>
             ))}

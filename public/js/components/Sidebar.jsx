@@ -1,17 +1,15 @@
 import {
-  CalendarIcon,
+  ClipboardIcon,
   HomeIcon,
-  MenuIcon,
   TruckIcon,
   UsersIcon,
 } from './Icons.jsx';
 
 const enlaces = [
+  { texto: 'Inicio', Icono: HomeIcon, href: '/home' },
   { texto: 'Maquinaria', Icono: TruckIcon, href: '/maquinaria' },
   { texto: 'Operadores', Icono: UsersIcon, href: '/operadores' },
-  { texto: 'Inicio', Icono: HomeIcon, href: '/home' },
-  { texto: 'Calendario', Icono: CalendarIcon, href: '#' },
-  { texto: 'Menú', Icono: MenuIcon, href: '#' },
+  { texto: 'Solicitudes', Icono: ClipboardIcon, href: '/solicitudes' },
 ];
 
 export default function Sidebar({ activo = 'Inicio' }) {
@@ -36,7 +34,6 @@ export default function Sidebar({ activo = 'Inicio' }) {
               className={esActivo ? 'nav-item activo' : 'nav-item'}
               href={href}
               aria-current={esActivo ? 'page' : undefined}
-              onClick={href === '#' ? (event) => event.preventDefault() : undefined}
             >
               <span className="nav-icono">
                 <Icono />
@@ -46,6 +43,10 @@ export default function Sidebar({ activo = 'Inicio' }) {
           );
         })}
       </nav>
+
+      <div className="sidebar-pie">
+        <p className="sidebar-version">MAKINA · Gestión de obra</p>
+      </div>
     </aside>
   );
 }

@@ -85,21 +85,35 @@ makina-webside/
 
 ## Páginas
 
-| Ruta                   | Vista                            |
-| ---------------------- | -------------------------------- |
-| `/` o `/login`         | Login                            |
-| `/home` o `/dashboard` | Dashboard (solo interfaz visual) |
-| `/maquinaria`          | Listado de maquinaria            |
-| `/maquinaria/:id`      | Detalle de una máquina           |
-| `/operadores`          | Listado de operadores            |
-| `/operador/:id`        | Detalle de un operador           |
+| Ruta                   | Vista                            | Área    |
+| ---------------------- | -------------------------------- | ------- |
+| `/` o `/login`         | Login                            | Empresa |
+| `/home` o `/dashboard` | Dashboard (solo interfaz visual) | Empresa |
+| `/maquinaria`          | Listado de maquinaria            | Empresa |
+| `/maquinaria/:id`      | Detalle de una máquina           | Empresa |
+| `/operadores`          | Listado de operadores            | Empresa |
+| `/operador/:id`        | Detalle de un operador           | Empresa |
+| `/solicitudes`         | Solicitudes recibidas            | Empresa |
+| `/solicitud/:id`       | Detalle de una solicitud         | Empresa |
+| `/solicitar`           | Formulario de solicitud          | Clientes |
+
+## Separación de áreas
+
+- **Empresa** (`/login` en adelante): administra maquinaria, operadores y las
+  solicitudes que llegan de los clientes. No incluye botones ni enlaces para
+  solicitar maquinaria.
+- **Clientes** (`/solicitar`): única web pública del cliente. Solo contiene el
+  formulario de solicitud y no tiene accesos al área de la empresa.
+- Toda solicitud enviada desde `/solicitar` se refleja automáticamente en
+  `/solicitudes` de la empresa.
 
 ### Datos de ejemplo
 
 El proyecto no tiene una conexión activa a PostgreSQL. Las pantallas usan las
 filas de ejemplo de `public/js/data/datos.js`, construidas con los mismos campos
 de `baseDatos.sql` (`clientes`, `operadores`, `maquinas`, `maquina_operador`,
-`ingresos` y `egresos`).
+`ingresos` y `egresos`). Las solicitudes y los clientes nuevos se guardan en
+`localStorage` (`public/js/data/solicitudes.js`).
 
 ## Puesta en marcha
 

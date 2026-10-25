@@ -23,6 +23,9 @@ export default defineConfig(({ command }) => {
               'views/maquina.html',
               'views/operadores.html',
               'views/operador.html',
+              'views/solicitar.html',
+              'views/solicitudes.html',
+              'views/solicitud.html',
             ]
           : [
               'login.html',
@@ -31,6 +34,9 @@ export default defineConfig(({ command }) => {
               'maquina.html',
               'operadores.html',
               'operador.html',
+              'solicitar.html',
+              'solicitudes.html',
+              'solicitud.html',
             ],
       },
     },
