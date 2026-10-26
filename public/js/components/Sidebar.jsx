@@ -3,6 +3,7 @@ import {
   HomeIcon,
   TruckIcon,
   UsersIcon,
+  WalletIcon,
 } from './Icons.jsx';
 
 const enlaces = [
@@ -10,6 +11,7 @@ const enlaces = [
   { texto: 'Maquinaria', Icono: TruckIcon, href: '/maquinaria' },
   { texto: 'Operadores', Icono: UsersIcon, href: '/operadores' },
   { texto: 'Solicitudes', Icono: ClipboardIcon, href: '/solicitudes' },
+  { texto: 'Movimientos', Icono: WalletIcon, href: '/movimientos' },
 ];
 
 export default function Sidebar({ activo = 'Inicio' }) {

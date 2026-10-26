@@ -671,82 +671,6 @@ img {
   object-fit: cover;
 }
 
-/* ===== Accesos rápidos ===== */
-.accesos-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  padding: 0 20px 20px;
-}
-
-.acceso {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 0;
-  padding: 12px;
-  background: #fbfbf7;
-  border: 1px solid var(--borde-suave);
-  border-radius: 12px;
-  transition: background 0.16s ease, border-color 0.16s ease,
-    box-shadow 0.16s ease;
-}
-
-.acceso:hover {
-  background: #fff;
-  border-color: #d9d9d0;
-  box-shadow: 0 8px 18px rgba(17, 17, 17, 0.05);
-}
-
-.acceso-icono {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: #7a5c00;
-  background: var(--crema);
-  border-radius: 9px;
-}
-
-.acceso-icono svg {
-  width: 16px;
-  height: 16px;
-}
-
-.acceso-info {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.acceso-info strong {
-  overflow: hidden;
-  color: #222;
-  font-size: 11.5px;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.acceso-info small {
-  overflow: hidden;
-  color: var(--texto-tenue);
-  font-size: 9.5px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.acceso > svg {
-  flex: none;
-  width: 14px;
-  height: 14px;
-  color: #b5b5ac;
-}
-
 .movimiento-mini {
   display: flex;
   align-items: center;
@@ -1894,12 +1818,6 @@ img {
 
   .panel-cuerpo-lista {
     padding: 0 14px;
-  }
-
-  .accesos-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 0 14px 14px;
   }
 
   .solicitud-mini,

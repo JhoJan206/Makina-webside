@@ -95,6 +95,7 @@ makina-webside/
 | `/operador/:id`        | Detalle de un operador           | Empresa |
 | `/solicitudes`         | Solicitudes recibidas            | Empresa |
 | `/solicitud/:id`       | Detalle de una solicitud         | Empresa |
+| `/movimientos`         | Registro de ingresos y egresos   | Empresa |
 | `/solicitar`           | Formulario de solicitud          | Clientes |
 
 ## Separación de áreas
@@ -113,7 +114,9 @@ El proyecto no tiene una conexión activa a PostgreSQL. Las pantallas usan las
 filas de ejemplo de `public/js/data/datos.js`, construidas con los mismos campos
 de `baseDatos.sql` (`clientes`, `operadores`, `maquinas`, `maquina_operador`,
 `ingresos` y `egresos`). Las solicitudes y los clientes nuevos se guardan en
-`localStorage` (`public/js/data/solicitudes.js`).
+`localStorage` (`public/js/data/solicitudes.js`), y los ingresos y egresos
+registrados desde `/movimientos` también se guardan en `localStorage`
+(`public/js/data/movimientos.js`).
 
 ## Puesta en marcha
 

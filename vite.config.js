@@ -26,6 +26,7 @@ export default defineConfig(({ command }) => {
               'views/solicitar.html',
               'views/solicitudes.html',
               'views/solicitud.html',
+              'views/movimientos.html',
             ]
           : [
               'login.html',
@@ -37,6 +38,7 @@ export default defineConfig(({ command }) => {
               'solicitar.html',
               'solicitudes.html',
               'solicitud.html',
+              'movimientos.html',
             ],
       },
     },

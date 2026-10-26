@@ -61,6 +61,8 @@ if (isDev) {
       req.url = '/views/solicitudes.html';
     } else if (ruta.startsWith('/solicitud/')) {
       req.url = '/views/solicitud.html';
+    } else if (ruta === '/movimientos') {
+      req.url = '/views/movimientos.html';
     }
 
     next();
@@ -89,6 +91,7 @@ if (isDev) {
   app.get(['/solicitar'], (req, res) => enviarVista('solicitar.html', res));
   app.get(['/solicitudes'], (req, res) => enviarVista('solicitudes.html', res));
   app.get(['/solicitud/:id'], (req, res) => enviarVista('solicitud.html', res));
+  app.get(['/movimientos'], (req, res) => enviarVista('movimientos.html', res));
 }
 
 server.listen(PORT, () => {

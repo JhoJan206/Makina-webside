@@ -10,8 +10,6 @@ import {
   ClockIcon,
   DollarIcon,
   TrendingUpIcon,
-  TruckIcon,
-  UsersIcon,
 } from '../components/Icons.jsx';
 import {
   formatearFecha,
@@ -133,50 +131,6 @@ export default function Home() {
                       <EstadoPill estado={solicitud.estado} compacto />
                     </a>
                   ))}
-                </div>
-              </section>
-
-              <section className="tarjeta panel-accesos">
-                <header className="panel-cabecera">
-                  <div>
-                    <p className="panel-eyebrow">Atajos</p>
-                    <h2>Accesos rápidos</h2>
-                  </div>
-                </header>
-
-                <div className="accesos-grid">
-                  <a className="acceso" href="/maquinaria">
-                    <span className="acceso-icono" aria-hidden="true">
-                      <TruckIcon />
-                    </span>
-                    <span className="acceso-info">
-                      <strong>Maquinaria</strong>
-                      <small>Estado de la flota</small>
-                    </span>
-                    <ArrowRightIcon />
-                  </a>
-
-                  <a className="acceso" href="/operadores">
-                    <span className="acceso-icono" aria-hidden="true">
-                      <UsersIcon />
-                    </span>
-                    <span className="acceso-info">
-                      <strong>Operadores</strong>
-                      <small>Equipo y asignaciones</small>
-                    </span>
-                    <ArrowRightIcon />
-                  </a>
-
-                  <a className="acceso" href="/solicitudes">
-                    <span className="acceso-icono" aria-hidden="true">
-                      <ClipboardIcon />
-                    </span>
-                    <span className="acceso-info">
-                      <strong>Solicitudes</strong>
-                      <small>Seguimiento de clientes</small>
-                    </span>
-                    <ArrowRightIcon />
-                  </a>
                 </div>
               </section>
             </div>
