@@ -1,13 +1,14 @@
-const datos = [
-  { mes: 'Abr', ingresos: 58, egresos: 24 },
-  { mes: 'May', ingresos: 68, egresos: 33 },
-  { mes: 'Jun', ingresos: 48, egresos: 20 },
-  { mes: 'Jul', ingresos: 82, egresos: 38 },
-  { mes: 'Ago', ingresos: 63, egresos: 28 },
-  { mes: 'Sep', ingresos: 92, egresos: 24 },
-];
+import { formatearMoneda, serieMensual } from '../data/datos.js';
 
-export default function Chart() {
+// idsMaquinas: limita el gráfico a esas máquinas (detalle de máquina/operador)
+export default function Chart({ idsMaquinas = null }) {
+  const serie = serieMensual(idsMaquinas);
+  const maximo = Math.max(
+    1,
+    ...serie.flatMap(({ ingresos, egresos }) => [ingresos, egresos]),
+  );
+  const altura = (valor) => Math.round((valor / maximo) * 100);
+
   return (
     <section className="tarjeta grafico">
       <header className="grafico-cabecera">
@@ -34,18 +35,18 @@ export default function Chart() {
           <div className="grafico-lineas" aria-hidden="true" />
 
           <div className="grafico-grupos">
-            {datos.map(({ mes, ingresos, egresos }) => (
+            {serie.map(({ mes, ingresos, egresos }) => (
               <div className="grupo" key={mes}>
                 <div className="grupo-barras">
                   <span
                     className="barra verde"
-                    style={{ height: `${ingresos}%` }}
-                    title={`Ingresos ${mes}: ${ingresos}`}
+                    style={{ height: `${altura(ingresos)}%` }}
+                    title={`Ingresos ${mes}: ${formatearMoneda(ingresos, false)}`}
                   />
                   <span
                     className="barra roja"
-                    style={{ height: `${egresos}%` }}
-                    title={`Egresos ${mes}: ${egresos}`}
+                    style={{ height: `${altura(egresos)}%` }}
+                    title={`Egresos ${mes}: ${formatearMoneda(egresos, false)}`}
                   />
                 </div>
 

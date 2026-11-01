@@ -1,10 +1,5 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { montar } from './data/cargar.jsx';
 import Operador from './pages/Operador.jsx';
 import '../css/main.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Operador />
-  </StrictMode>,
-);
+montar(Operador);

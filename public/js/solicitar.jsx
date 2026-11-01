@@ -1,10 +1,5 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { cargarTarifas, montar } from './data/cargar.jsx';
 import Solicitar from './pages/Solicitar.jsx';
 import '../css/main.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Solicitar />
-  </StrictMode>,
-);
+montar(Solicitar, { cargar: cargarTarifas });

@@ -3,6 +3,7 @@ import {
   CheckIcon,
   ClockIcon,
   DollarIcon,
+  SettingsIcon,
   TruckIcon,
 } from '../components/Icons.jsx';
 import PageHeader from '../components/PageHeader.jsx';
@@ -47,6 +48,12 @@ export default function Maquinaria() {
             eyebrow="Flota"
             titulo="Maquinaria"
             descripcion="Consulta el estado, la operación y el rendimiento de cada equipo."
+            acciones={
+              <a className="btn btn-primario" href="/admin/maquinas">
+                <SettingsIcon />
+                Gestionar máquinas
+              </a>
+            }
           />
 
           <section className="stats-grid" aria-label="Resumen de maquinaria">

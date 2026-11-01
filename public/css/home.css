@@ -1044,6 +1044,18 @@ img {
   border-color: var(--amarillo);
 }
 
+.btn:disabled,
+.btn:disabled:hover {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primario:disabled:hover {
+  color: #fff;
+  background: var(--negro);
+  border-color: var(--negro);
+}
+
 .btn-fantasma {
   color: #222;
   background: #fff;

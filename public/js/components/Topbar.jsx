@@ -11,9 +11,10 @@ import {
   listarSolicitudes,
 } from '../data/solicitudes.js';
 import { tipoMaquinaVisible } from '../data/datos.js';
+import { sesion } from '../data/cargar.jsx';
+import { api } from '../api/cliente.js';
 
 const CLAVE_NOTIFICACIONES_LEIDAS = 'makina.notificaciones.leidas.v1';
-const CLAVES_SESION = ['makina.sesion', 'makina.usuario', 'token', 'usuario'];
 
 function leerNotificacionesLeidas() {
   if (typeof window === 'undefined') return [];
@@ -85,12 +86,17 @@ function construirNotificaciones() {
     }));
 }
 
-function cerrarSesion() {
+async function cerrarSesion() {
   try {
-    CLAVES_SESION.forEach((clave) => window.localStorage.removeItem(clave));
+    await api('/auth/logout', { metodo: 'POST', redirigirSinSesion: false });
+  } catch {
+    // Aun si falla la red, se vuelve al login; la cookie expira sola.
+  }
+
+  try {
     window.sessionStorage.clear();
   } catch {
-    // Aun si el navegador bloquea el almacenamiento, se cierra la sesión.
+    // El navegador puede bloquear el almacenamiento.
   }
 
   window.location.assign('/login');
@@ -320,7 +326,9 @@ export default function Topbar({ migas = [] }) {
             <span className="avatar">
               <UserIcon />
             </span>
-            <span className="usuario-nombre">Jhojan Jacome</span>
+            <span className="usuario-nombre">
+              {sesion.usuario?.nombre ?? 'Usuario'}
+            </span>
           </button>
 
           {usuarioAbierto && (

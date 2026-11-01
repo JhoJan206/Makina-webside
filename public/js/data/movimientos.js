@@ -1,49 +1,13 @@
-// Ingresos y egresos alineados con las tablas `ingresos` y `egresos` de
-// baseDatos.sql.
-//
-// El proyecto no tiene una conexión activa a PostgreSQL, así que los
-// movimientos nuevos se guardan en localStorage. Los campos usados son
-// exactamente los del esquema:
+// Ingresos y egresos (tablas `ingresos` y `egresos`), servidos por la API.
 //
 //   ingresos -> id_maquina, id_cliente, horas, valor_ingreso,
 //               descripcion, fecha, created_at, updated_at
 //   egresos  -> id_maquina, valor_egreso, descripcion, fecha,
 //               created_at, updated_at
 
-import {
-  egresos as egresosBase,
-  ingresos as ingresosBase,
-  maquinas,
-} from './datos.js';
+import { api } from '../api/cliente.js';
+import { egresos, ingresos, maquinas } from './datos.js';
 import { listarClientes } from './solicitudes.js';
-
-const CLAVE_INGRESOS = 'makina.ingresos.v1';
-const CLAVE_EGRESOS = 'makina.egresos.v1';
-
-function leerArreglo(clave) {
-  if (typeof window === 'undefined') return [];
-
-  try {
-    const guardado = window.localStorage.getItem(clave);
-    if (guardado === null) return [];
-
-    const valor = JSON.parse(guardado);
-    return Array.isArray(valor) ? valor : [];
-  } catch {
-    return [];
-  }
-}
-
-function guardarArreglo(clave, valor) {
-  if (typeof window === 'undefined') return;
-
-  try {
-    window.localStorage.setItem(clave, JSON.stringify(valor));
-  } catch {
-    // Si el navegador bloquea localStorage, la vista sigue funcionando
-    // con los datos de la sesión actual.
-  }
-}
 
 function buscarMaquina(idMaquina) {
   return (
@@ -99,68 +63,36 @@ function ordenarMovimientos(a, b) {
 }
 
 export function listarMovimientos() {
-  const ingresos = [
-    ...ingresosBase,
-    ...leerArreglo(CLAVE_INGRESOS),
-  ].map(enriquecerIngreso);
-  const egresos = [
-    ...egresosBase,
-    ...leerArreglo(CLAVE_EGRESOS),
-  ].map(enriquecerEgreso);
-
-  return [...ingresos, ...egresos].sort(ordenarMovimientos);
+  return [
+    ...ingresos.map(enriquecerIngreso),
+    ...egresos.map(enriquecerEgreso),
+  ].sort(ordenarMovimientos);
 }
 
-export function crearMovimiento(datos) {
+export async function crearMovimiento(datos) {
   const tipo = datos.tipo === 'egreso' ? 'egreso' : 'ingreso';
-  const ahora = new Date().toISOString();
-  const descripcion = datos.descripcion?.trim() || null;
+
+  const { tipo: _tipo, ...movimiento } = await api('/movimientos', {
+    metodo: 'POST',
+    cuerpo: {
+      tipo,
+      id_maquina: Number(datos.id_maquina),
+      valor: Number(datos.valor),
+      descripcion: datos.descripcion?.trim() || null,
+      fecha: datos.fecha,
+      ...(tipo === 'ingreso'
+        ? { id_cliente: Number(datos.id_cliente), horas: Number(datos.horas) }
+        : {}),
+    },
+  });
 
   if (tipo === 'egreso') {
-    const guardados = leerArreglo(CLAVE_EGRESOS);
-    const siguienteId =
-      [...egresosBase, ...guardados].reduce(
-        (mayor, egreso) => Math.max(mayor, egreso.id_egreso),
-        0,
-      ) + 1;
-
-    const egreso = {
-      id_egreso: siguienteId,
-      id_maquina: Number(datos.id_maquina),
-      valor_egreso: Number(datos.valor),
-      descripcion,
-      fecha: datos.fecha,
-      created_at: ahora,
-      updated_at: ahora,
-    };
-
-    guardarArreglo(CLAVE_EGRESOS, [...guardados, egreso]);
-
-    return enriquecerEgreso(egreso);
+    egresos.push(movimiento);
+    return enriquecerEgreso(movimiento);
   }
 
-  const guardados = leerArreglo(CLAVE_INGRESOS);
-  const siguienteId =
-    [...ingresosBase, ...guardados].reduce(
-      (mayor, ingreso) => Math.max(mayor, ingreso.id_ingreso),
-      0,
-    ) + 1;
-
-  const ingreso = {
-    id_ingreso: siguienteId,
-    id_maquina: Number(datos.id_maquina),
-    id_cliente: Number(datos.id_cliente),
-    horas: Number(datos.horas),
-    valor_ingreso: Number(datos.valor),
-    descripcion,
-    fecha: datos.fecha,
-    created_at: ahora,
-    updated_at: ahora,
-  };
-
-  guardarArreglo(CLAVE_INGRESOS, [...guardados, ingreso]);
-
-  return enriquecerIngreso(ingreso);
+  ingresos.push(movimiento);
+  return enriquecerIngreso(movimiento);
 }
 
 export function resumenMovimientos(movimientos = listarMovimientos()) {

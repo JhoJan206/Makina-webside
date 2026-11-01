@@ -44,6 +44,8 @@ export default function Solicitud() {
   const idRuta = window.location.pathname.split('/').filter(Boolean).pop();
   const [solicitud, setSolicitud] = useState(() => obtenerSolicitud(idRuta));
   const [aviso, setAviso] = useState('');
+  const [error, setError] = useState('');
+  const [guardando, setGuardando] = useState(false);
 
   if (!solicitud) {
     return (
@@ -79,8 +81,23 @@ export default function Solicitud() {
     `Hola ${cliente?.nombre_responsable || ''}, te contactamos de Makina por la solicitud #${solicitud.id_solicitud}.`,
   );
 
-  function cambiarEstado(estado) {
-    const actualizada = actualizarEstado(solicitud.id_solicitud, estado);
+  async function cambiarEstado(estado) {
+    if (guardando) return;
+
+    setGuardando(true);
+    setError('');
+    setAviso('');
+
+    let actualizada;
+
+    try {
+      actualizada = await actualizarEstado(solicitud.id_solicitud, estado);
+    } catch (errorApi) {
+      setError(errorApi.message);
+      return;
+    } finally {
+      setGuardando(false);
+    }
 
     if (!actualizada) return;
 
@@ -112,6 +129,12 @@ export default function Solicitud() {
             descripcion={`Recibida el ${formatearFechaHora(solicitud.created_at)}`}
             acciones={<EstadoPill estado={solicitud.estado} />}
           />
+
+          {error && (
+            <p className="form-error" role="alert">
+              {error}
+            </p>
+          )}
 
           {aviso && (
             <div className="aviso-exito" role="status">
@@ -206,7 +229,7 @@ export default function Solicitud() {
                 <div className="detalle-panel-cuerpo">
                   <p className="detalle-ayuda">
                     Cambia el estado a medida que avanzas con el cliente. El
-                    cambio se guarda en este navegador.
+                    cambio queda guardado para todo el equipo.
                   </p>
 
                   <div className="acciones-estado">
@@ -217,6 +240,7 @@ export default function Solicitud() {
                           key={estado}
                           className={`btn ${clase}`}
                           type="button"
+                          disabled={guardando}
                           onClick={() => cambiarEstado(estado)}
                         >
                           <Icono />
@@ -228,6 +252,7 @@ export default function Solicitud() {
                       <button
                         className="btn btn-fantasma"
                         type="button"
+                        disabled={guardando}
                         onClick={() => cambiarEstado('Pendiente')}
                       >
                         <ClockIcon />

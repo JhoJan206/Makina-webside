@@ -1,158 +1,224 @@
 # Makina
 
-Sitio web con **Node.js + Express** (backend) y **React** (frontend), con Vite como bundler.
+Sitio web con **Node.js + Express** (backend / API), **React** (frontend, con
+Vite como bundler) y **PostgreSQL en Supabase** como base de datos. Preparado
+para desplegarse en **Vercel**.
 
 ## Estructura
 
 ```
 makina-webside/
 │
-├── node_modules/         # Dependencias instaladas
+├── api/
+│   └── index.js          # Entrada de Vercel Functions (exporta la app de Express)
 │
-├── public/               # Archivos estáticos accesibles por el navegador
-│   ├── css/              # Hojas de estilo (.css)
-│   │   ├── login.css     # Estilos de la vista de login
-│   │   ├── home.css      # Estilos del dashboard (inicio)
-│   │   ├── maquinaria.css # Estilos de la vista de maquinaria
-│   │   ├── maquina.css   # Estilos del detalle de máquina
-│   │   ├── operadores.css # Estilos de la vista de operadores
-│   │   ├── operador.css  # Estilos del detalle de operador
-│   │   └── main.css      # Estilos base (React)
+├── public/               # Frontend (lo compila Vite)
+│   ├── css/              # Hojas de estilo (.css) de cada vista
 │   ├── img/              # Imagenes del sitio (se sirven en /img/...)
-│   │   ├── maquinaria/   # Fotos del listado de maquinaria
-│   │   ├── logo_fondo_amarillo.png
-│   │   └── logo_fondo_negro.png
-│   ├── js/               # Scripts de JavaScript para el cliente/navegador
-│   │   ├── main.jsx      # Entrada de React para el login (monta en #root)
-│   │   ├── home.jsx      # Entrada de React para el dashboard
-│   │   ├── maquinaria.jsx # Entrada de React para maquinaria
-│   │   ├── maquina.jsx   # Entrada de React para el detalle de máquina
-│   │   ├── operadores.jsx # Entrada de React para operadores
-│   │   ├── operador.jsx  # Entrada de React para el detalle de operador
-│   │   ├── App.jsx       # Componente raíz del login
-│   │   ├── components/   # Componentes reutilizables
-│   │   │   ├── Icons.jsx # Iconos SVG
-│   │   │   ├── Sidebar.jsx # Menu lateral del dashboard
-│   │   │   ├── Topbar.jsx  # Barra superior del dashboard
-│   │   │   └── Chart.jsx   # Grafico de ingresos vs egresos
-│   │   ├── data/         # Datos de ejemplo compartidos
-│   │   │   └── datos.js  # Filas y helpers basados en baseDatos.sql
-│   │   ├── pages/        # Vistas escritas en React
-│   │   │   ├── Login.jsx # Vista de login
-│   │   │   ├── Home.jsx  # Vista del dashboard
-│   │   │   ├── Maquinaria.jsx # Vista del listado de maquinaria
-│   │   │   ├── Maquina.jsx # Vista del detalle de máquina
-│   │   │   ├── Operadores.jsx # Vista del listado de operadores
-│   │   │   └── Operador.jsx # Vista del detalle de operador
-│   │   └── dist/         # Build generado por Vite (login.html, home.html, maquinaria.html, maquina.html, operadores.html, operador.html, assets/)
-│   └── views/            # Vistas/Plantillas HTML
-│       ├── login.html
-│       ├── home.html
-│       ├── maquinaria.html
-│       ├── maquina.html
-│       ├── operadores.html
-│       └── operador.html
+│   ├── js/
+│   │   ├── *.jsx         # Entradas de cada vista (cargan datos y montan React)
+│   │   ├── api/
+│   │   │   └── cliente.js  # fetch a /api con la cookie de sesión
+│   │   ├── components/   # Componentes reutilizables (Sidebar, Topbar, Chart, AdminCrud...)
+│   │   ├── data/
+│   │   │   ├── cargar.jsx      # Carga los datos de la API antes de montar la vista
+│   │   │   ├── datos.js        # Caché de máquinas, operadores, clientes, movimientos + helpers
+│   │   │   ├── solicitudes.js  # Solicitudes (crear / cambiar estado vía API)
+│   │   │   └── movimientos.js  # Ingresos y egresos (registrar vía API)
+│   │   ├── pages/        # Vistas escritas en React (Admin*.jsx = gestión)
+│   │   └── dist/         # Build generado por Vite (ignorado por Git)
+│   └── views/            # HTML de entrada de cada vista
 │
-├── src/                  # Código fuente del servidor (Backend)
-│   ├── config/           # Configuración de base de datos o variables
-│   ├── middleware/       # Funciones intermedias (auth, validaciones)
-│   ├── models/           # Definición de tablas o esquemas de datos
-│   └── routes/           # Rutas y endpoints del servidor
+├── scripts/
+│   └── crear-usuario.js  # Crea usuarios de la empresa para el login
 │
-├── .env                  # Variables de entorno privadas
-├── .gitignore            # Archivos ignorados por Git
-├── index.js              # Punto de entrada principal de la aplicación
-├── package-lock.json
-├── package.json          # Configuración del proyecto y scripts
-├── README.md             # Documentación del proyecto
+├── src/                  # Backend
+│   ├── app.js            # App de Express (sin listen), compartida por local y Vercel
+│   ├── config/           # Variables de entorno, conexión a Postgres, rutas de vistas
+│   ├── middleware/       # Sesión (JWT), validación y manejo de errores
+│   ├── models/           # Consultas SQL por entidad
+│   └── routes/           # Endpoints de la API
+│
+├── supabase/
+│   ├── migrations/001_esquema.sql  # Esquema de la base de datos
+│   └── seed.sql                    # Datos de ejemplo (opcional)
+│
+├── .env.example          # Plantilla de variables de entorno
+├── baseDatos.sql         # Copia del esquema (igual a supabase/migrations/001_esquema.sql)
+├── index.js              # Servidor local: Express + Vite (dev) o build (producción)
+├── vercel.json           # Configuración de despliegue en Vercel
 └── vite.config.js        # Configuración del bundler de React
 ```
 
 ## Dependencias
 
-- `express` — servidor web
+- `express`, `cookie-parser` — servidor web y API
+- `pg` — conexión a PostgreSQL (Supabase)
+- `bcryptjs`, `jsonwebtoken` — contraseñas cifradas y sesión
 - `react`, `react-dom` — interfaz de usuario
-- `vite`, `@vitejs/plugin-react` — desarrollo (devDependencies)
+- `vite`, `@vitejs/plugin-react` — desarrollo y build (devDependencies)
 
 ## Scripts
 
-| Comando           | Descripción                                                |
-| ----------------- | ---------------------------------------------------------- |
-| `npm run dev`     | **Desarrollo**: Express + React con hot reload en `:3000`  |
-| `npm start`       | Producción: sirve el build de `public/js/dist` en `:3000`   |
-| `npm run build`   | Compila React a `public/js/dist/`                          |
-| `npm run dev:web` | Solo el frontend con Vite (`:5173`), sin backend           |
+| Comando                 | Descripción                                                |
+| ----------------------- | ---------------------------------------------------------- |
+| `npm run dev`           | **Desarrollo**: Express + API + React con hot reload en `:3000` |
+| `npm start`             | Producción local: sirve el build y la API en `:3000`       |
+| `npm run build`         | Compila React a `public/js/dist/` (incluye `img/`)         |
+| `npm run dev:web`       | Solo el frontend con Vite (`:5173`), con proxy de `/api` a `:3000` |
+| `npm run crear-usuario` | Crea un usuario para iniciar sesión (ver abajo)            |
 
 ## Páginas
 
 | Ruta                   | Vista                            | Área    |
 | ---------------------- | -------------------------------- | ------- |
 | `/` o `/login`         | Login                            | Empresa |
-| `/home` o `/dashboard` | Dashboard (solo interfaz visual) | Empresa |
+| `/home` o `/dashboard` | Dashboard                        | Empresa |
 | `/maquinaria`          | Listado de maquinaria            | Empresa |
-| `/maquinaria/:id`      | Detalle de una máquina           | Empresa |
+| `/maquinaria/:id`      | Detalle de una máquina (id o placa) | Empresa |
 | `/operadores`          | Listado de operadores            | Empresa |
 | `/operador/:id`        | Detalle de un operador           | Empresa |
 | `/solicitudes`         | Solicitudes recibidas            | Empresa |
 | `/solicitud/:id`       | Detalle de una solicitud         | Empresa |
 | `/movimientos`         | Registro de ingresos y egresos   | Empresa |
+| `/admin/maquinas` (o `/admin`) | Crear, editar y eliminar máquinas   | Empresa |
+| `/admin/operadores`    | Crear, editar y eliminar operadores | Empresa |
+| `/admin/clientes`      | Crear, editar y eliminar clientes   | Empresa |
 | `/solicitar`           | Formulario de solicitud          | Clientes |
 
 ## Separación de áreas
 
-- **Empresa** (`/login` en adelante): administra maquinaria, operadores y las
-  solicitudes que llegan de los clientes. No incluye botones ni enlaces para
-  solicitar maquinaria.
-- **Clientes** (`/solicitar`): única web pública del cliente. Solo contiene el
-  formulario de solicitud y no tiene accesos al área de la empresa.
-- Toda solicitud enviada desde `/solicitar` se refleja automáticamente en
-  `/solicitudes` de la empresa.
+- **Empresa** (`/login` en adelante): requiere sesión. Administra maquinaria,
+  operadores, movimientos y las solicitudes que llegan de los clientes. Si no hay
+  sesión, cualquier vista redirige a `/login`.
+- **Gestión** (`/admin/*`): dentro del área de la empresa. Cualquier persona que
+  haya iniciado sesión puede crear, editar y eliminar máquinas, operadores y
+  clientes. Aparece en el menú lateral como "Gestión" y con botones "Gestionar…"
+  en Maquinaria y Operadores.
+- **Clientes** (`/solicitar`): pública. Solo contiene el formulario de solicitud;
+  usa los endpoints `/api/publico/*` y no tiene acceso a datos de la empresa.
+- Toda solicitud enviada desde `/solicitar` se guarda en la base de datos y
+  aparece en `/solicitudes`.
 
-### Datos de ejemplo
+## Backend y API
 
-El proyecto no tiene una conexión activa a PostgreSQL. Las pantallas usan las
-filas de ejemplo de `public/js/data/datos.js`, construidas con los mismos campos
-de `baseDatos.sql` (`clientes`, `operadores`, `maquinas`, `maquina_operador`,
-`ingresos` y `egresos`). Las solicitudes y los clientes nuevos se guardan en
-`localStorage` (`public/js/data/solicitudes.js`), y los ingresos y egresos
-registrados desde `/movimientos` también se guardan en `localStorage`
-(`public/js/data/movimientos.js`).
+Todas las rutas están bajo `/api` y responden JSON. Los errores tienen la forma
+`{ "error": "mensaje" }` (y `detalles` por campo cuando es un error de validación).
+
+| Método y ruta                                   | Acceso  | Descripción |
+| ----------------------------------------------- | ------- | ----------- |
+| `GET /api/health`                               | Público | Estado del servidor |
+| `POST /api/auth/login`                          | Público | `{ identificador, contrasena }` (usuario **o** correo) |
+| `POST /api/auth/logout`                         | Público | Cierra la sesión |
+| `GET /api/auth/me`                              | Sesión  | Usuario actual |
+| `GET /api/publico/tarifas`                      | Público | Valor/hora promedio por tipo de máquina |
+| `POST /api/publico/solicitudes`                 | Público | Crea una solicitud (reutiliza o crea el cliente) |
+| `GET /api/maquinas`, `GET /api/maquinas/:id`    | Sesión  | `:id` numérico o placa |
+| `POST /api/maquinas`, `PUT, DELETE /api/maquinas/:id` | Sesión | No se puede eliminar si tiene ingresos/egresos (409); su historial de asignaciones se borra |
+| `GET /api/operadores`, `GET /api/operadores/:id` | Sesión | |
+| `POST /api/operadores`, `PUT, DELETE /api/operadores/:id` | Sesión | Al eliminar se borra su historial de asignaciones |
+| `GET /api/clientes`, `GET /api/clientes/:id`    | Sesión  | |
+| `POST /api/clientes`, `PUT, DELETE /api/clientes/:id` | Sesión | No se puede eliminar si tiene ingresos o solicitudes (409) |
+| `GET, POST /api/asignaciones`                   | Sesión  | Operador ↔ máquina (`?id_maquina=&id_operador=`). Al asignar, se cierra la asignación abierta de esa máquina |
+| `PATCH /api/asignaciones/:id/cerrar`            | Sesión  | `{ fecha_salida? }` |
+| `GET /api/movimientos`                          | Sesión  | `{ ingresos, egresos }` (`?desde=&hasta=&id_maquina=`) |
+| `POST /api/movimientos`                         | Sesión  | `{ tipo: 'ingreso' \| 'egreso', id_maquina, valor, fecha, descripcion?, id_cliente*, horas* }` (*solo ingresos) |
+| `DELETE /api/movimientos/:tipo/:id`             | Sesión  | Elimina un ingreso o egreso |
+| `GET /api/solicitudes`                          | Sesión  | `?estado=` opcional |
+| `GET /api/solicitudes/:id`                      | Sesión  | |
+| `PATCH /api/solicitudes/:id/estado`             | Sesión  | `{ estado }` |
+
+**Sesión**: al iniciar sesión el servidor envía una cookie `makina_sesion`
+(`httpOnly`, `SameSite=Lax`, `Secure` en producción) con un JWT firmado con
+`JWT_SECRET`, válida por `SESSION_DAYS` días.
+
+**Seguridad en Supabase**: todas las tablas tienen RLS activado y sin políticas,
+así la API REST pública de Supabase (anon key) no puede leer ni escribir nada. El
+backend se conecta directo a Postgres y no se ve afectado.
+
+## Variables de entorno
+
+Copia `.env.example` como `.env` (ignorado por Git). En Vercel se configuran en
+*Project Settings → Environment Variables*.
+
+| Variable       | Descripción                                          | Por defecto |
+| -------------- | ---------------------------------------------------- | ----------- |
+| `DATABASE_URL` | Cadena de conexión del pooler de Supabase (puerto 6543) | — (obligatoria) |
+| `JWT_SECRET`   | Secreto largo y aleatorio para firmar la sesión      | — (obligatoria) |
+| `PORT`         | Puerto del servidor local                            | `3000`      |
+| `SESSION_DAYS` | Duración de la sesión en días                        | `7`         |
+| `DB_POOL_MAX`  | Conexiones máximas por instancia                     | `3`         |
 
 ## Puesta en marcha
 
-### Desarrollo (sin builds)
+### 1. Base de datos en Supabase (capa gratuita)
+
+1. Crea un proyecto en [supabase.com](https://supabase.com) y guarda la contraseña
+   de la base de datos.
+2. En **SQL Editor** ejecuta el contenido de `supabase/migrations/001_esquema.sql`.
+3. (Opcional) Ejecuta `supabase/seed.sql` para cargar los datos de ejemplo. Los
+   ingresos y egresos quedan en el mes actual para que el dashboard muestre datos.
+   También crea un **usuario de prueba**:
+
+   | Usuario (o correo)                  | Contraseña    |
+   | ----------------------------------- | ------------- |
+   | `admin` (`admin@makina.local`)      | `Makina2026!` |
+
+   No ejecutes el seed en producción, o elimina ese usuario y crea uno propio.
+4. En **Project Settings → Database → Connection string** copia la cadena del
+   **Transaction pooler** (puerto `6543`), reemplaza `[YOUR-PASSWORD]` y pégala en
+   `DATABASE_URL` de tu `.env`.
+5. Genera un `JWT_SECRET`:
+
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+   ```
+
+### 2. Crear el primer usuario (si no usaste el seed)
 
 ```bash
 npm install
+npm run crear-usuario -- --usuario laura --correo laura@makina.com --nombre "Laura Méndez"
+```
+
+El script pide la contraseña por consola (mínimo 8 caracteres) o la toma de la
+variable `MAKINA_PASSWORD`. Con ese usuario (o su correo) se inicia sesión en `/login`.
+
+### 3. Desarrollo
+
+```bash
 npm run dev
 ```
 
-Abre **http://localhost:3000**. Express sirve las apps de React a través de Vite
-(middleware mode), con **hot reload**: cada cambio en `public/js/` o `public/css/`
-se refleja al instante, sin reiniciar el servidor y sin compilar nada. El
-frontend y la API comparten el mismo origen y puerto. El dashboard está en
-**http://localhost:3000/home**, el listado de maquinaria en
-**http://localhost:3000/maquinaria**, el detalle de cada máquina en
-**http://localhost:3000/maquinaria/:id** (por ejemplo, `/maquinaria/387J`),
-el listado de operadores en **http://localhost:3000/operadores** y el detalle
-de cada operador en **http://localhost:3000/operador/:id** (por ejemplo,
-`/operador/1`).
+Abre **http://localhost:3000**. Express sirve la API en `/api` y las apps de
+React a través de Vite (middleware mode), con **hot reload**. El servidor se
+reinicia solo (`node --watch`) cuando cambian `index.js` o los archivos de `src/`.
 
-El servidor se reinicia solo (`node --watch`) cuando cambian `index.js` o los
-archivos de `src/`.
-
-### Producción
+### 4. Producción local
 
 ```bash
 npm run build
 npm start
 ```
 
-## Variables de entorno
+## Despliegue en Vercel
 
-Las variables se definen en `.env` (ignorado por Git).
+El proyecto ya incluye `vercel.json`:
 
-| Variable | Descripción                    | Por defecto |
-| -------- | ------------------------------ | ----------- |
-| `PORT`   | Puerto del servidor Express   | `3000`      |
-| `DB_*`   | Datos de conexión (opcional)   | —           |
+- **Build**: `npm run build` → el frontend estático queda en `public/js/dist`.
+- **API**: `api/index.js` exporta la app de Express como una Vercel Function;
+  todas las rutas `/api/*` se redirigen a ella.
+- **Rutas amigables** (`/home`, `/maquinaria/:id`, …): se reescriben a su HTML en
+  `vercel.json`. Si agregas una vista nueva, añádela en `src/config/vistas.js`
+  (servidor local) **y** en los `rewrites` de `vercel.json`.
+
+Pasos:
+
+1. Sube el repositorio a GitHub e impórtalo en Vercel (el *Framework Preset* debe
+   quedar en **Other**; `vercel.json` ya define build y salida).
+2. En *Environment Variables* agrega `DATABASE_URL`, `JWT_SECRET` y
+   `NODE_ENV=production`.
+3. Despliega. Comprueba `https://<tu-dominio>/api/health`.
+
+> La capa gratuita de Supabase pausa el proyecto tras una semana sin actividad;
+> se reactiva desde el panel de Supabase.

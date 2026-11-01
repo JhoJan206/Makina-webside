@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Chart from '../components/Chart.jsx';
 import EmptyState from '../components/EmptyState.jsx';
+import NoEncontrado from '../components/NoEncontrado.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import StatCard from '../components/StatCard.jsx';
 import Topbar from '../components/Topbar.jsx';
@@ -38,12 +39,26 @@ const tabs = [
 export default function Operador() {
   const idRuta = window.location.pathname.split('/').filter(Boolean).pop();
   const operador = obtenerOperador(idRuta);
+  const [tab, setTab] = useState('todos');
+
+  if (!operador) {
+    return (
+      <NoEncontrado
+        activo="Operadores"
+        clase="pagina-operador"
+        migas={[{ texto: 'operadores', href: '/operadores' }]}
+        Icono={UsersIcon}
+        titulo="Operador no encontrado"
+        volver={{ href: '/operadores', texto: 'Volver a operadores' }}
+      />
+    );
+  }
+
   const asignacion = obtenerAsignacionActualOperador(operador.id_operador);
   const maquina = asignacion ? obtenerMaquina(asignacion.id_maquina) : null;
   const resumen = resumenOperador(operador.id_operador);
   const historial = historialMaquinas(operador.id_operador);
   const registros = registrosOperador(operador.id_operador);
-  const [tab, setTab] = useState('todos');
 
   const visibles =
     tab === 'todos'
@@ -257,7 +272,13 @@ export default function Operador() {
             </aside>
           </div>
 
-          {resumen.horas > 0 && <Chart />}
+          {resumen.horas > 0 && (
+            <Chart
+              idsMaquinas={historial
+                .filter((asignacion) => !asignacion.fecha_salida)
+                .map((asignacion) => asignacion.id_maquina)}
+            />
+          )}
         </main>
       </div>
     </div>

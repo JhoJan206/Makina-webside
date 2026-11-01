@@ -1,0 +1,32 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "public/js/dist",
+  "cleanUrls": false,
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api" },
+    { "source": "/", "destination": "/login.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/home", "destination": "/home.html" },
+    { "source": "/dashboard", "destination": "/home.html" },
+    { "source": "/maquinaria", "destination": "/maquinaria.html" },
+    { "source": "/maquinaria/:id", "destination": "/maquina.html" },
+    { "source": "/operadores", "destination": "/operadores.html" },
+    { "source": "/operador/:id", "destination": "/operador.html" },
+    { "source": "/solicitar", "destination": "/solicitar.html" },
+    { "source": "/solicitudes", "destination": "/solicitudes.html" },
+    { "source": "/solicitud/:id", "destination": "/solicitud.html" },
+    { "source": "/movimientos", "destination": "/movimientos.html" },
+    { "source": "/admin", "destination": "/admin-maquinas.html" },
+    { "source": "/admin/maquinas", "destination": "/admin-maquinas.html" },
+    { "source": "/admin/operadores", "destination": "/admin-operadores.html" },
+    { "source": "/admin/clientes", "destination": "/admin-clientes.html" }
+  ]
+}

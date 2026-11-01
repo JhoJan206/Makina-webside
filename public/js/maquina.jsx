@@ -1,10 +1,5 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { montar } from './data/cargar.jsx';
 import Maquina from './pages/Maquina.jsx';
 import '../css/main.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Maquina />
-  </StrictMode>,
-);
+montar(Maquina);

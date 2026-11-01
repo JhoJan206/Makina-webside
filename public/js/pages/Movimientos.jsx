@@ -65,6 +65,7 @@ export default function Movimientos() {
   const [movimientos, setMovimientos] = useState(() => listarMovimientos());
   const [error, setError] = useState('');
   const [aviso, setAviso] = useState('');
+  const [enviando, setEnviando] = useState(false);
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const [mostrarTodos, setMostrarTodos] = useState(false);
@@ -136,8 +137,9 @@ export default function Movimientos() {
     setFiltro('todos');
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    if (enviando) return;
 
     const idMaquina = Number(formulario.id_maquina);
     const valor = Number(formulario.valor);
@@ -172,15 +174,27 @@ export default function Movimientos() {
       return;
     }
 
-    const movimiento = crearMovimiento({
-      tipo,
-      fecha: formulario.fecha,
-      id_maquina: idMaquina,
-      id_cliente: esIngreso ? Number(formulario.id_cliente) : null,
-      horas: esIngreso ? horasNumero : null,
-      valor,
-      descripcion: formulario.descripcion,
-    });
+    setEnviando(true);
+    setError('');
+
+    let movimiento;
+
+    try {
+      movimiento = await crearMovimiento({
+        tipo,
+        fecha: formulario.fecha,
+        id_maquina: idMaquina,
+        id_cliente: esIngreso ? Number(formulario.id_cliente) : null,
+        horas: esIngreso ? horasNumero : null,
+        valor,
+        descripcion: formulario.descripcion,
+      });
+    } catch (errorApi) {
+      setError(errorApi.message);
+      return;
+    } finally {
+      setEnviando(false);
+    }
 
     setMovimientos(listarMovimientos());
     setFormulario(formularioInicial());
@@ -462,9 +476,17 @@ export default function Movimientos() {
                       : 'El egreso se descuenta del balance de la empresa.'}
                   </p>
 
-                  <button className="btn btn-primario" type="submit">
+                  <button
+                    className="btn btn-primario"
+                    type="submit"
+                    disabled={enviando}
+                  >
                     <CheckIcon />
-                    {esIngreso ? 'Registrar ingreso' : 'Registrar egreso'}
+                    {enviando
+                      ? 'Guardando…'
+                      : esIngreso
+                        ? 'Registrar ingreso'
+                        : 'Registrar egreso'}
                   </button>
                 </div>
               </form>

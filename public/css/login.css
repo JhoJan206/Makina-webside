@@ -351,3 +351,24 @@ button:focus-visible {
     padding: 28px 16px;
   }
 }
+
+/* Mensaje de error del inicio de sesión */
+.login-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  color: #a1251d;
+  font-size: 13px;
+  background: #fdecea;
+  border: 1px solid #f6c7c2;
+  border-radius: 10px;
+}
+
+button:disabled,
+button:disabled:hover {
+  color: #fff;
+  background: var(--negro);
+  box-shadow: none;
+  transform: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Chart from '../components/Chart.jsx';
 import EmptyState from '../components/EmptyState.jsx';
+import NoEncontrado from '../components/NoEncontrado.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import StatCard from '../components/StatCard.jsx';
 import Topbar from '../components/Topbar.jsx';
@@ -10,6 +11,7 @@ import {
   DollarIcon,
   MapPinIcon,
   TrendingUpIcon,
+  TruckIcon,
   UserIcon,
 } from '../components/Icons.jsx';
 import {
@@ -36,11 +38,25 @@ const tabs = [
 export default function Maquina() {
   const idRuta = window.location.pathname.split('/').filter(Boolean).pop();
   const maquina = obtenerMaquina(idRuta);
+  const [tab, setTab] = useState('todos');
+
+  if (!maquina) {
+    return (
+      <NoEncontrado
+        activo="Maquinaria"
+        clase="pagina-maquina"
+        migas={[{ texto: 'maquinaria', href: '/maquinaria' }]}
+        Icono={TruckIcon}
+        titulo="Máquina no encontrada"
+        volver={{ href: '/maquinaria', texto: 'Volver a maquinaria' }}
+      />
+    );
+  }
+
   const operador = obtenerOperadorActual(maquina.id_maquina);
   const resumen = resumenMaquina(maquina.id_maquina);
   const historial = historialOperadores(maquina.id_maquina);
   const registros = registrosMaquina(maquina.id_maquina);
-  const [tab, setTab] = useState('todos');
 
   const visibles =
     tab === 'todos'
@@ -253,7 +269,7 @@ export default function Maquina() {
             </aside>
           </div>
 
-          <Chart />
+          <Chart idsMaquinas={[maquina.id_maquina]} />
         </main>
       </div>
     </div>

@@ -1,159 +1,53 @@
-// Datos de ejemplo alineados con el esquema de baseDatos.sql.
-// El proyecto no tiene una conexión activa a PostgreSQL: estas filas
-// permiten visualizar las pantallas usando los mismos campos del esquema.
+// Datos de la empresa, cargados desde la API (/api) al abrir cada vista.
+// Los arreglos se llenan con llenarDatos() (ver cargar.js) y los helpers de
+// abajo trabajan sobre ellos de forma síncrona.
 //
 // Tablas usadas:
 //   clientes        -> nombre_obra
 //   operadores      -> nombre, apellido, cedula, sueldo
-//   maquinas        -> tipo, placa, valor_hora
+//   maquinas        -> tipo, placa, valor_hora, imagen, imagen_alt
 //   maquina_operador-> id_maquina, id_operador, fecha_ingreso, fecha_salida
 //   ingresos        -> id_maquina, id_cliente, horas, valor_ingreso, descripcion, fecha
 //   egresos         -> id_maquina, valor_egreso, descripcion, fecha
 
-export const PERIODO = '2026-09';
+// Mes que resumen el dashboard y los detalles (AAAA-MM, hora local)
+export const PERIODO = (() => {
+  const hoy = new Date();
+  return `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
+})();
 
-export const clientes = [
-  {
-    id_cliente: 1,
-    nombre_obra: 'Obra #1',
-    nombre_empresa: 'Constructora Andina',
-    nombre_responsable: 'Laura Méndez',
-    telefono: '300 123 4567',
-  },
-  {
-    id_cliente: 2,
-    nombre_obra: 'Vía Norte',
-    nombre_empresa: 'Vías del Norte SAS',
-    nombre_responsable: 'Diego Ramírez',
-    telefono: '310 456 7890',
-  },
-  {
-    id_cliente: 3,
-    nombre_obra: 'Cantera Sur',
-    nombre_empresa: 'Agregados del Sur',
-    nombre_responsable: 'Sandra Rojas',
-    telefono: '320 987 6543',
-  },
-];
+export const clientes = [];
+export const operadores = [];
+export const maquinas = [];
+export const maquinaOperador = [];
+export const ingresos = [];
+export const egresos = [];
 
-export const operadores = [
-  {
-    id_operador: 1,
-    nombre: 'Carlos',
-    apellido: 'Pérez',
-    cedula: '1.020.304.050',
-    sueldo: 3200000,
-  },
-  {
-    id_operador: 2,
-    nombre: 'Jhojan',
-    apellido: 'Jacome',
-    cedula: '1.098.765.432',
-    sueldo: 3500000,
-  },
-  {
-    id_operador: 3,
-    nombre: 'Andrés',
-    apellido: 'Gómez',
-    cedula: '1.045.678.901',
-    sueldo: 3000000,
-  },
-  {
-    id_operador: 4,
-    nombre: 'Mateo',
-    apellido: 'Salazar',
-    cedula: '1.112.233.445',
-    sueldo: 2900000,
-  },
-];
+const IMAGENES_POR_TIPO = {
+  Pajarita: '/img/maquinaria/retroexcavadora.jpg',
+  Bulldozer: '/img/maquinaria/excavadora.jpg',
+};
 
-export const maquinas = [
-  {
-    id_maquina: 1,
-    tipo: 'Pajarita',
-    placa: '387J',
-    valor_hora: 85000,
-    imagen: '/img/maquinaria/retroexcavadora.jpg',
-    alt: 'Retroexcavadora amarilla trabajando en un terreno de tierra',
-  },
-  {
-    id_maquina: 2,
-    tipo: 'Bulldozer',
-    placa: '786H',
-    valor_hora: 120000,
-    imagen: '/img/maquinaria/excavadora.jpg',
-    alt: 'Excavadora amarilla sobre un montón de tierra',
-  },
-  {
-    id_maquina: 3,
-    tipo: 'Pajarita',
-    placa: '023Y',
-    valor_hora: 95000,
-    imagen: '/img/maquinaria/cargadora.jpg',
-    alt: 'Cargadora amarilla en una cantera',
-  },
-];
+export function normalizarMaquina(maquina) {
+  return {
+    ...maquina,
+    imagen: maquina.imagen || IMAGENES_POR_TIPO[maquina.tipo] || '/img/maquinaria/cargadora.jpg',
+    alt: maquina.imagen_alt || `${tipoMaquinaVisible(maquina.tipo)} ${maquina.placa}`,
+  };
+}
 
-export const maquinaOperador = [
-  // Máquina 387J
-  { id: 1, id_maquina: 1, id_operador: 1, fecha_ingreso: '2026-01-15', fecha_salida: null },
-  { id: 2, id_maquina: 1, id_operador: 4, fecha_ingreso: '2025-06-01', fecha_salida: '2026-01-10' },
-  { id: 3, id_maquina: 1, id_operador: 2, fecha_ingreso: '2024-09-01', fecha_salida: '2025-05-25' },
+function reemplazar(arreglo, filas) {
+  arreglo.splice(0, arreglo.length, ...(filas ?? []));
+}
 
-  // Máquina 786H
-  { id: 4, id_maquina: 2, id_operador: 2, fecha_ingreso: '2026-02-01', fecha_salida: null },
-  { id: 5, id_maquina: 2, id_operador: 1, fecha_ingreso: '2025-03-01', fecha_salida: '2026-01-30' },
-  { id: 6, id_maquina: 2, id_operador: 3, fecha_ingreso: '2024-11-01', fecha_salida: '2025-02-20' },
-
-  // Máquina 023Y
-  { id: 7, id_maquina: 3, id_operador: 3, fecha_ingreso: '2026-03-10', fecha_salida: null },
-  { id: 8, id_maquina: 3, id_operador: 4, fecha_ingreso: '2025-08-01', fecha_salida: '2026-03-01' },
-  { id: 9, id_maquina: 3, id_operador: 1, fecha_ingreso: '2025-01-15', fecha_salida: '2025-07-20' },
-];
-
-export const ingresos = [
-  // Máquina 387J
-  { id_ingreso: 1, id_maquina: 1, id_cliente: 1, horas: 20, valor_ingreso: 1700000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-02' },
-  { id_ingreso: 2, id_maquina: 1, id_cliente: 2, horas: 26, valor_ingreso: 2210000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-05' },
-  { id_ingreso: 3, id_maquina: 1, id_cliente: 2, horas: 24, valor_ingreso: 2040000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-09' },
-  { id_ingreso: 4, id_maquina: 1, id_cliente: 1, horas: 18, valor_ingreso: 1530000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-12' },
-  { id_ingreso: 5, id_maquina: 1, id_cliente: 3, horas: 22, valor_ingreso: 1870000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-16' },
-  { id_ingreso: 6, id_maquina: 1, id_cliente: 1, horas: 28, valor_ingreso: 2380000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-20' },
-
-  // Máquina 786H
-  { id_ingreso: 7, id_maquina: 2, id_cliente: 2, horas: 16, valor_ingreso: 1920000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-03' },
-  { id_ingreso: 8, id_maquina: 2, id_cliente: 2, horas: 20, valor_ingreso: 2400000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-08' },
-  { id_ingreso: 9, id_maquina: 2, id_cliente: 1, horas: 24, valor_ingreso: 2880000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-14' },
-  { id_ingreso: 10, id_maquina: 2, id_cliente: 3, horas: 18, valor_ingreso: 2160000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-18' },
-  { id_ingreso: 11, id_maquina: 2, id_cliente: 2, horas: 22, valor_ingreso: 2640000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-25' },
-
-  // Máquina 023Y
-  { id_ingreso: 12, id_maquina: 3, id_cliente: 3, horas: 24, valor_ingreso: 2280000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-02' },
-  { id_ingreso: 13, id_maquina: 3, id_cliente: 3, horas: 28, valor_ingreso: 2660000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-07' },
-  { id_ingreso: 14, id_maquina: 3, id_cliente: 1, horas: 20, valor_ingreso: 1900000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-11' },
-  { id_ingreso: 15, id_maquina: 3, id_cliente: 3, horas: 26, valor_ingreso: 2470000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-17' },
-  { id_ingreso: 16, id_maquina: 3, id_cliente: 2, horas: 22, valor_ingreso: 2090000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-21' },
-  { id_ingreso: 17, id_maquina: 3, id_cliente: 3, horas: 30, valor_ingreso: 2850000, descripcion: 'Trabajo/proyecto', fecha: '2026-09-28' },
-];
-
-export const egresos = [
-  // Máquina 387J
-  { id_egreso: 1, id_maquina: 1, valor_egreso: 850000, descripcion: 'Repuesto', fecha: '2026-09-04' },
-  { id_egreso: 2, id_maquina: 1, valor_egreso: 320000, descripcion: 'Repuesto', fecha: '2026-09-10' },
-  { id_egreso: 3, id_maquina: 1, valor_egreso: 180000, descripcion: 'Mantenimiento', fecha: '2026-09-15' },
-  { id_egreso: 4, id_maquina: 1, valor_egreso: 950000, descripcion: 'Combustible', fecha: '2026-09-22' },
-
-  // Máquina 786H
-  { id_egreso: 5, id_maquina: 2, valor_egreso: 1200000, descripcion: 'Combustible', fecha: '2026-09-06' },
-  { id_egreso: 6, id_maquina: 2, valor_egreso: 480000, descripcion: 'Repuesto', fecha: '2026-09-12' },
-  { id_egreso: 7, id_maquina: 2, valor_egreso: 350000, descripcion: 'Mantenimiento', fecha: '2026-09-19' },
-  { id_egreso: 8, id_maquina: 2, valor_egreso: 670000, descripcion: 'Repuesto', fecha: '2026-09-27' },
-
-  // Máquina 023Y
-  { id_egreso: 9, id_maquina: 3, valor_egreso: 1450000, descripcion: 'Combustible', fecha: '2026-09-05' },
-  { id_egreso: 10, id_maquina: 3, valor_egreso: 620000, descripcion: 'Repuesto', fecha: '2026-09-13' },
-  { id_egreso: 11, id_maquina: 3, valor_egreso: 410000, descripcion: 'Mantenimiento', fecha: '2026-09-23' },
-];
+export function llenarDatos(datos) {
+  if (datos.clientes) reemplazar(clientes, datos.clientes);
+  if (datos.operadores) reemplazar(operadores, datos.operadores);
+  if (datos.maquinas) reemplazar(maquinas, datos.maquinas.map(normalizarMaquina));
+  if (datos.asignaciones) reemplazar(maquinaOperador, datos.asignaciones);
+  if (datos.ingresos) reemplazar(ingresos, datos.ingresos);
+  if (datos.egresos) reemplazar(egresos, datos.egresos);
+}
 
 const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
@@ -203,7 +97,7 @@ export function obtenerMaquina(id) {
       (maquina) =>
         maquina.placa.toLowerCase() === buscado ||
         String(maquina.id_maquina) === buscado,
-    ) ?? maquinas[0]
+    ) ?? null
   );
 }
 
@@ -214,7 +108,7 @@ export function obtenerOperador(id) {
     operadores.find(
       (operador) =>
         String(operador.id_operador) === buscado || operador.cedula === buscado,
-    ) ?? operadores[0]
+    ) ?? null
   );
 }
 
@@ -500,4 +394,28 @@ export function ultimosRegistros(limite = 5) {
   ].sort((a, b) => b.fecha.localeCompare(a.fecha));
 
   return registros.slice(0, limite);
+}
+
+// Totales de ingresos y egresos de los últimos `meses` meses (hasta PERIODO).
+// Si se pasan ids de máquinas, solo se suman sus movimientos.
+export function serieMensual(idsMaquinas = null, meses = 6) {
+  const [anio, mes] = PERIODO.split('-').map(Number);
+  const filtro = idsMaquinas ? new Set(idsMaquinas) : null;
+  const incluir = (registro) => !filtro || filtro.has(registro.id_maquina);
+
+  return Array.from({ length: meses }, (_, i) => {
+    const fecha = new Date(anio, mes - meses + i, 1);
+    const clave = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+    const etiqueta = MESES[fecha.getMonth()];
+
+    return {
+      mes: etiqueta[0].toUpperCase() + etiqueta.slice(1),
+      ingresos: ingresos
+        .filter((ingreso) => incluir(ingreso) && ingreso.fecha.startsWith(clave))
+        .reduce((total, ingreso) => total + ingreso.valor_ingreso, 0),
+      egresos: egresos
+        .filter((egreso) => incluir(egreso) && egreso.fecha.startsWith(clave))
+        .reduce((total, egreso) => total + egreso.valor_egreso, 0),
+    };
+  });
 }

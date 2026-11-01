@@ -8,18 +8,26 @@
     "start": "node index.js",
     "dev": "node --watch-path=./index.js --watch-path=./src index.js --dev",
     "dev:web": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "crear-usuario": "node scripts/crear-usuario.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.2",
     "vite": "^8.3.5"
+  },
+  "engines": {
+    "node": ">=20.12"
   }
 }

@@ -6,3 +6,53 @@
 body {
   margin: 0;
 }
+
+/* Pantalla de carga / error mientras llegan los datos de la API */
+.carga-estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 100vh;
+  padding: 24px 16px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  text-align: center;
+  color: #1d1d1b;
+  background: #f6f6f2;
+}
+
+.carga-estado img {
+  border-radius: 12px;
+}
+
+.carga-estado-titulo {
+  margin: 4px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.carga-estado-texto {
+  max-width: 420px;
+  margin: 0;
+  color: #6b6b64;
+}
+
+.carga-estado button {
+  margin-top: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: #111;
+  border: 1px solid #111;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.carga-estado button:hover {
+  color: #111;
+  background: #ffcb21;
+  border-color: #ffcb21;
+}

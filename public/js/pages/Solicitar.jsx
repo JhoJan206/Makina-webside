@@ -10,28 +10,26 @@ import {
   SendIcon,
   TruckIcon,
 } from '../components/Icons.jsx';
-import {
-  formatearMoneda,
-  maquinas,
-  promedioValorHora,
-  tipoMaquinaVisible,
-} from '../data/datos.js';
+import { formatearMoneda, tipoMaquinaVisible } from '../data/datos.js';
 import {
   crearSolicitud,
   formatearFechaSolicitud,
+  resumenTarifas,
   valorEstimadoSolicitud,
 } from '../data/solicitudes.js';
 
-const tipos = [...new Set(maquinas.map((maquina) => maquina.tipo))];
 const fechaMinima = new Date().toISOString().slice(0, 10);
 
 export default function Solicitar() {
   const [enviada, setEnviada] = useState(null);
   const [error, setError] = useState('');
   const [claveFormulario, setClaveFormulario] = useState(0);
+  const [enviando, setEnviando] = useState(false);
+  const { tipos, equipos, promedio } = resumenTarifas();
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    if (enviando) return;
 
     const datos = Object.fromEntries(new FormData(event.currentTarget));
     const horas = Number(datos.horas_estimadas);
@@ -62,7 +60,19 @@ export default function Solicitar() {
     }
 
     setError('');
-    const solicitud = crearSolicitud({ ...datos, horas_estimadas: horas });
+    setEnviando(true);
+
+    let solicitud;
+
+    try {
+      solicitud = await crearSolicitud({ ...datos, horas_estimadas: horas });
+    } catch (errorApi) {
+      setError(errorApi.message);
+      return;
+    } finally {
+      setEnviando(false);
+    }
+
     setEnviada(solicitud);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -141,7 +151,7 @@ export default function Solicitar() {
                 <div>
                   <small>Tarifa promedio</small>
                   <strong>
-                    {formatearMoneda(promedioValorHora(), false)} / hora
+                    {formatearMoneda(promedio, false)} / hora
                   </strong>
                 </div>
               </div>
@@ -152,7 +162,7 @@ export default function Solicitar() {
                 </span>
                 <div>
                   <small>Flota disponible</small>
-                  <strong>{maquinas.length} equipos</strong>
+                  <strong>{equipos} equipos</strong>
                 </div>
               </div>
             </div>
@@ -227,6 +237,16 @@ export default function Solicitar() {
                 key={claveFormulario}
                 onSubmit={handleSubmit}
               >
+                {/* Campo trampa anti-spam: oculto para las personas */}
+                <input
+                  type="text"
+                  name="sitio_web"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: 'absolute', left: '-10000px', width: 1, height: 1 }}
+                />
+
                 <div className="portal-form-cabecera">
                   <p className="page-eyebrow">Formulario</p>
                   <h2>¿Qué necesitas para tu obra?</h2>
@@ -349,9 +369,13 @@ export default function Solicitar() {
                     <ClockIcon />
                     Respuesta estimada en menos de 24 horas hábiles.
                   </p>
-                  <button className="btn btn-primario btn-enviar" type="submit">
+                  <button
+                    className="btn btn-primario btn-enviar"
+                    type="submit"
+                    disabled={enviando}
+                  >
                     <SendIcon />
-                    Enviar solicitud
+                    {enviando ? 'Enviando…' : 'Enviar solicitud'}
                   </button>
                 </div>
               </form>

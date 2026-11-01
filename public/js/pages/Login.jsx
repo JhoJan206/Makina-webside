@@ -1,9 +1,46 @@
-import { LockIcon, MailIcon, UserIcon,  } from '../components/Icons.jsx';
+import { useEffect, useState } from 'react';
+import { LockIcon, UserIcon } from '../components/Icons.jsx';
+import { api } from '../api/cliente.js';
 
 export default function Login() {
-  // Aqui se conectara el POST /api/login cuando exista
-  function handleSubmit(event) {
+  const [error, setError] = useState('');
+  const [enviando, setEnviando] = useState(false);
+
+  // Si ya hay una sesión activa se entra directo al dashboard
+  useEffect(() => {
+    api('/auth/me', { redirigirSinSesion: false })
+      .then(() => window.location.replace('/home'))
+      .catch(() => {});
+  }, []);
+
+  async function handleSubmit(event) {
     event.preventDefault();
+    if (enviando) return;
+
+    const datos = Object.fromEntries(new FormData(event.currentTarget));
+
+    if (!datos.identificador?.trim() || !datos.contrasena) {
+      setError('Ingresa tu usuario o correo y tu contraseña.');
+      return;
+    }
+
+    setEnviando(true);
+    setError('');
+
+    try {
+      await api('/auth/login', {
+        metodo: 'POST',
+        cuerpo: {
+          identificador: datos.identificador.trim(),
+          contrasena: datos.contrasena,
+        },
+        redirigirSinSesion: false,
+      });
+      window.location.assign('/home');
+    } catch (errorApi) {
+      setError(errorApi.message);
+      setEnviando(false);
+    }
   }
 
   return (
@@ -19,21 +56,22 @@ export default function Login() {
       {/* Lado derecho */}
       <div className="derecha">
         <div className="tarjeta">
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="usuario">NOMBRE DE USUARIO</label>
+          <form onSubmit={handleSubmit} noValidate>
+            <label htmlFor="identificador">USUARIO O CORREO ELECTRÓNICO</label>
             <div className="campo">
               <span>
                 <UserIcon />
               </span>
-              <input id="usuario" name="usuario" type="text" placeholder="UserName" />
-            </div>
-
-            <label htmlFor="correo">CORREO ELECTRÓNICO</label>
-            <div className="campo">
-              <span>
-                <MailIcon />
-              </span>
-              <input id="correo" name="correo" type="email" placeholder="user@email.com" />
+              <input
+                id="identificador"
+                name="identificador"
+                type="text"
+                placeholder="UserName o user@email.com"
+                autoComplete="username"
+                autoCapitalize="none"
+                spellCheck="false"
+                required
+              />
             </div>
 
             <label htmlFor="contrasena">CONTRASEÑA</label>
@@ -41,10 +79,25 @@ export default function Login() {
               <span>
                 <LockIcon />
               </span>
-              <input id="contrasena" name="contrasena" type="password" placeholder="••••••••••" />
+              <input
+                id="contrasena"
+                name="contrasena"
+                type="password"
+                placeholder="••••••••••"
+                autoComplete="current-password"
+                required
+              />
             </div>
 
-            <button type="submit">Login</button>
+            {error && (
+              <p className="login-error" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button type="submit" disabled={enviando}>
+              {enviando ? 'Ingresando…' : 'Login'}
+            </button>
           </form>
         </div>
       </div>

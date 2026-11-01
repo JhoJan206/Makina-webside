@@ -3,6 +3,7 @@ import {
   CheckIcon,
   ClockIcon,
   DollarIcon,
+  SettingsIcon,
   TruckIcon,
   UsersIcon,
 } from '../components/Icons.jsx';
@@ -49,10 +50,16 @@ export default function Operadores() {
             titulo="Operadores"
             descripcion="Conoce la asignación, la experiencia y el rendimiento de tu equipo."
             acciones={
-              <a className="btn btn-fantasma" href="/maquinaria">
-                <TruckIcon />
-                Ver maquinaria
-              </a>
+              <>
+                <a className="btn btn-fantasma" href="/maquinaria">
+                  <TruckIcon />
+                  Ver maquinaria
+                </a>
+                <a className="btn btn-primario" href="/admin/operadores">
+                  <SettingsIcon />
+                  Gestionar operadores
+                </a>
+              </>
             }
           />
 

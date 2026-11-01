@@ -1,6 +1,7 @@
 import {
   ClipboardIcon,
   HomeIcon,
+  SettingsIcon,
   TruckIcon,
   UsersIcon,
   WalletIcon,
@@ -12,6 +13,7 @@ const enlaces = [
   { texto: 'Operadores', Icono: UsersIcon, href: '/operadores' },
   { texto: 'Solicitudes', Icono: ClipboardIcon, href: '/solicitudes' },
   { texto: 'Movimientos', Icono: WalletIcon, href: '/movimientos' },
+  { texto: 'Gestión', Icono: SettingsIcon, href: '/admin/maquinas' },
 ];
 
 export default function Sidebar({ activo = 'Inicio' }) {
