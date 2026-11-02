@@ -342,7 +342,7 @@
   grid-template-columns: minmax(160px, 1.4fr) minmax(120px, 1fr) minmax(
       110px,
       0.95fr
-    ) 88px 104px;
+    ) 88px 104px 34px;
   align-items: center;
   gap: 12px;
   padding: 13px 20px;
@@ -452,6 +452,37 @@
   color: var(--rojo);
 }
 
+.mov-eliminar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: var(--texto-tenue);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.mov-eliminar svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mov-fila:hover .mov-eliminar {
+  border-color: var(--borde);
+}
+
+.mov-eliminar:hover,
+.mov-eliminar:focus-visible {
+  color: #fff;
+  background: var(--rojo);
+  border-color: var(--rojo);
+  outline: 0;
+}
+
 .mov-historial-pie {
   display: flex;
   justify-content: center;
@@ -465,7 +496,7 @@
     grid-template-columns: minmax(150px, 1.4fr) minmax(105px, 1fr) minmax(
         95px,
         0.9fr
-      ) 78px 94px;
+      ) 78px 94px 34px;
     gap: 10px;
     padding: 12px 16px;
   }
@@ -487,7 +518,7 @@
 
 @media (max-width: 860px) {
   .mov-fila {
-    grid-template-columns: minmax(160px, 1.5fr) minmax(110px, 1fr) 82px 96px;
+    grid-template-columns: minmax(160px, 1.5fr) minmax(110px, 1fr) 82px 96px 34px;
   }
 
   .mov-fila > :nth-child(3),
@@ -541,7 +572,7 @@
     padding: 8px 12px 12px;
   }
 
-  .mov-encabezado {
+  .mov-fila.mov-encabezado {
     display: none;
   }
 
@@ -558,7 +589,19 @@
     background: #fff;
   }
 
+  .mov-fila {
+    position: relative;
+  }
+
+  .mov-eliminar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-color: var(--borde);
+  }
+
   .mov-concepto {
+    padding-right: 40px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--borde-suave);
   }

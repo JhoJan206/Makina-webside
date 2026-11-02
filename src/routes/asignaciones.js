@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { conConflicto } from '../middleware/errores.js';
 import { campo, HttpError, validar, validarId } from '../middleware/validar.js';
 import {
   cerrarAsignacion,
@@ -25,7 +26,10 @@ router.post('/', async (req, res) => {
     fecha_ingreso: campo.fecha(),
   });
   res.status(201).json(
-    await crearAsignacion({ ...datos, fecha_ingreso: datos.fecha_ingreso ?? hoy() }),
+    await conConflicto(
+      crearAsignacion({ ...datos, fecha_ingreso: datos.fecha_ingreso ?? hoy() }),
+      'La máquina o el operador no existe.',
+    ),
   );
 });
 

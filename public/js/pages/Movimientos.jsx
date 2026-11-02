@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import Dialogo from '../components/Dialogo.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import Sidebar from '../components/Sidebar.jsx';
@@ -10,6 +11,7 @@ import {
   ClockIcon,
   DollarIcon,
   SearchIcon,
+  TrashIcon,
   TrendingDownIcon,
   TrendingUpIcon,
   TruckIcon,
@@ -24,6 +26,7 @@ import {
 import { listarClientes } from '../data/solicitudes.js';
 import {
   crearMovimiento,
+  eliminarMovimiento,
   listarMovimientos,
   resumenMovimientos,
 } from '../data/movimientos.js';
@@ -69,6 +72,9 @@ export default function Movimientos() {
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const [mostrarTodos, setMostrarTodos] = useState(false);
+  const [porEliminar, setPorEliminar] = useState(null);
+  const [eliminando, setEliminando] = useState(false);
+  const [errorEliminar, setErrorEliminar] = useState('');
 
   const clientes = useMemo(() => listarClientes(), []);
   const resumen = resumenMovimientos(movimientos);
@@ -135,6 +141,35 @@ export default function Movimientos() {
   function limpiarFiltros() {
     setBusqueda('');
     setFiltro('todos');
+  }
+
+  function pedirEliminar(movimiento) {
+    setErrorEliminar('');
+    setPorEliminar(movimiento);
+  }
+
+  async function confirmarEliminar() {
+    if (!porEliminar || eliminando) return;
+
+    setEliminando(true);
+    setErrorEliminar('');
+
+    try {
+      await eliminarMovimiento(porEliminar);
+    } catch (errorApi) {
+      setErrorEliminar(errorApi.message);
+      return;
+    } finally {
+      setEliminando(false);
+    }
+
+    const tipoEliminado = porEliminar.tipo === 'ingreso' ? 'Ingreso' : 'Egreso';
+    setMovimientos(listarMovimientos());
+    setPorEliminar(null);
+    setError('');
+    setAviso(
+      `${tipoEliminado} de ${formatearMoneda(porEliminar.valor, false)} eliminado.`,
+    );
   }
 
   async function handleSubmit(event) {
@@ -549,6 +584,9 @@ export default function Movimientos() {
                     <span className="mov-col-valor" role="columnheader">
                       Valor
                     </span>
+                    <span role="columnheader">
+                      <span className="sr-only">Acciones</span>
+                    </span>
                   </div>
 
                   {visibles.map((movimiento) => (
@@ -616,6 +654,21 @@ export default function Movimientos() {
                         {movimiento.tipo === 'ingreso' ? '+' : '−'}
                         {formatearMoneda(movimiento.valor, false)}
                       </span>
+
+                      <span role="cell">
+                        <button
+                          className="mov-eliminar"
+                          type="button"
+                          onClick={() => pedirEliminar(movimiento)}
+                          aria-label={`Eliminar ${movimiento.tipo} de ${formatearMoneda(
+                            movimiento.valor,
+                            false,
+                          )} del ${formatearFecha(movimiento.fecha, true)}`}
+                          title="Eliminar"
+                        >
+                          <TrashIcon />
+                        </button>
+                      </span>
                     </div>
                   ))}
 
@@ -663,6 +716,34 @@ export default function Movimientos() {
           </div>
         </main>
       </div>
+
+      <Dialogo
+        abierto={Boolean(porEliminar)}
+        onCerrar={() => setPorEliminar(null)}
+        Icono={TrashIcon}
+        titulo={`¿Eliminar este ${porEliminar?.tipo ?? 'movimiento'}?`}
+        texto="Se borrará de forma permanente y el balance se recalculará. Esta acción no se puede deshacer."
+        error={errorEliminar}
+        textoConfirmar={eliminando ? 'Eliminando…' : 'Eliminar'}
+        IconoConfirmar={TrashIcon}
+        onConfirmar={confirmarEliminar}
+        ocupado={eliminando}
+      >
+        {porEliminar && (
+          <p className="admin-dialogo-detalle">
+            {porEliminar.descripcion ||
+              (porEliminar.tipo === 'ingreso' ? 'Ingreso' : 'Egreso')}
+            {' · '}
+            {porEliminar.tipo === 'ingreso' ? '+' : '−'}
+            {formatearMoneda(porEliminar.valor, false)}
+            <br />
+            {porEliminar.maquina ? nombreMaquina(porEliminar.maquina) : '—'}
+            {' · '}
+            {formatearFecha(porEliminar.fecha, true)}
+            {porEliminar.cliente ? ` · ${porEliminar.cliente.nombre_obra}` : ''}
+          </p>
+        )}
+      </Dialogo>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import {
   ClipboardIcon,
   HomeIcon,
+  LinkIcon,
   SettingsIcon,
   TruckIcon,
   UsersIcon,
@@ -11,8 +12,9 @@ const enlaces = [
   { texto: 'Inicio', Icono: HomeIcon, href: '/home' },
   { texto: 'Maquinaria', Icono: TruckIcon, href: '/maquinaria' },
   { texto: 'Operadores', Icono: UsersIcon, href: '/operadores' },
+  { texto: 'Asignaciones', corto: 'Trabajos', Icono: LinkIcon, href: '/asignaciones' },
   { texto: 'Solicitudes', Icono: ClipboardIcon, href: '/solicitudes' },
-  { texto: 'Movimientos', Icono: WalletIcon, href: '/movimientos' },
+  { texto: 'Movimientos', corto: 'Finanzas', Icono: WalletIcon, href: '/movimientos' },
   { texto: 'Gestión', Icono: SettingsIcon, href: '/admin/maquinas' },
 ];
 
@@ -29,7 +31,7 @@ export default function Sidebar({ activo = 'Inicio' }) {
       </div>
 
       <nav className="nav" aria-label="Principal">
-        {enlaces.map(({ texto, Icono, href }) => {
+        {enlaces.map(({ texto, corto, Icono, href }) => {
           const esActivo = texto === activo;
 
           return (
@@ -42,7 +44,10 @@ export default function Sidebar({ activo = 'Inicio' }) {
               <span className="nav-icono">
                 <Icono />
               </span>
-              <span className="nav-texto">{texto}</span>
+              <span className="nav-texto">
+                <span className="nav-texto-largo">{texto}</span>
+                <span className="nav-texto-corto">{corto ?? texto}</span>
+              </span>
             </a>
           );
         })}

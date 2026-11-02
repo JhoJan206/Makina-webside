@@ -95,6 +95,18 @@ export async function crearMovimiento(datos) {
   return enriquecerIngreso(movimiento);
 }
 
+export async function eliminarMovimiento(movimiento) {
+  const esEgreso = movimiento.tipo === 'egreso';
+  const id = esEgreso ? movimiento.id_egreso : movimiento.id_ingreso;
+
+  await api(`/movimientos/${movimiento.tipo}/${id}`, { metodo: 'DELETE' });
+
+  const lista = esEgreso ? egresos : ingresos;
+  const clave = esEgreso ? 'id_egreso' : 'id_ingreso';
+  const indice = lista.findIndex((fila) => fila[clave] === id);
+  if (indice !== -1) lista.splice(indice, 1);
+}
+
 export function resumenMovimientos(movimientos = listarMovimientos()) {
   const ingresos = movimientos.filter(
     (movimiento) => movimiento.tipo === 'ingreso',

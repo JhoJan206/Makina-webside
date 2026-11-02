@@ -19,12 +19,13 @@ makina-webside/
 │   │   ├── *.jsx         # Entradas de cada vista (cargan datos y montan React)
 │   │   ├── api/
 │   │   │   └── cliente.js  # fetch a /api con la cookie de sesión
-│   │   ├── components/   # Componentes reutilizables (Sidebar, Topbar, Chart, AdminCrud...)
+│   │   ├── components/   # Componentes reutilizables (Sidebar, Topbar, Chart, AdminCrud, Dialogo...)
 │   │   ├── data/
 │   │   │   ├── cargar.jsx      # Carga los datos de la API antes de montar la vista
 │   │   │   ├── datos.js        # Caché de máquinas, operadores, clientes, movimientos + helpers
+│   │   │   ├── asignaciones.js # Operador ↔ máquina (asignar / cerrar vía API)
 │   │   │   ├── solicitudes.js  # Solicitudes (crear / cambiar estado vía API)
-│   │   │   └── movimientos.js  # Ingresos y egresos (registrar vía API)
+│   │   │   └── movimientos.js  # Ingresos y egresos (registrar / eliminar vía API)
 │   │   ├── pages/        # Vistas escritas en React (Admin*.jsx = gestión)
 │   │   └── dist/         # Build generado por Vite (ignorado por Git)
 │   └── views/            # HTML de entrada de cada vista
@@ -80,7 +81,8 @@ makina-webside/
 | `/operador/:id`        | Detalle de un operador           | Empresa |
 | `/solicitudes`         | Solicitudes recibidas            | Empresa |
 | `/solicitud/:id`       | Detalle de una solicitud         | Empresa |
-| `/movimientos`         | Registro de ingresos y egresos   | Empresa |
+| `/movimientos`         | Registro de ingresos y egresos (y eliminarlos) | Empresa |
+| `/asignaciones`        | Asignar operadores a máquinas y cerrar asignaciones | Empresa |
 | `/admin/maquinas` (o `/admin`) | Crear, editar y eliminar máquinas   | Empresa |
 | `/admin/operadores`    | Crear, editar y eliminar operadores | Empresa |
 | `/admin/clientes`      | Crear, editar y eliminar clientes   | Empresa |
@@ -119,8 +121,8 @@ Todas las rutas están bajo `/api` y responden JSON. Los errores tienen la forma
 | `POST /api/operadores`, `PUT, DELETE /api/operadores/:id` | Sesión | Al eliminar se borra su historial de asignaciones |
 | `GET /api/clientes`, `GET /api/clientes/:id`    | Sesión  | |
 | `POST /api/clientes`, `PUT, DELETE /api/clientes/:id` | Sesión | No se puede eliminar si tiene ingresos o solicitudes (409) |
-| `GET, POST /api/asignaciones`                   | Sesión  | Operador ↔ máquina (`?id_maquina=&id_operador=`). Al asignar, se cierra la asignación abierta de esa máquina |
-| `PATCH /api/asignaciones/:id/cerrar`            | Sesión  | `{ fecha_salida? }` |
+| `GET, POST /api/asignaciones`                   | Sesión  | Operador ↔ máquina (`?id_maquina=&id_operador=`). Al asignar se cierran la asignación abierta de esa máquina y la del operador en otra máquina, con la fecha de inicio de la nueva |
+| `PATCH /api/asignaciones/:id/cerrar`            | Sesión  | `{ fecha_salida? }` (por defecto hoy; no puede ser anterior al inicio) |
 | `GET /api/movimientos`                          | Sesión  | `{ ingresos, egresos }` (`?desde=&hasta=&id_maquina=`) |
 | `POST /api/movimientos`                         | Sesión  | `{ tipo: 'ingreso' \| 'egreso', id_maquina, valor, fecha, descripcion?, id_cliente*, horas* }` (*solo ingresos) |
 | `DELETE /api/movimientos/:tipo/:id`             | Sesión  | Elimina un ingreso o egreso |

@@ -24,6 +24,7 @@
     { "source": "/solicitudes", "destination": "/solicitudes.html" },
     { "source": "/solicitud/:id", "destination": "/solicitud.html" },
     { "source": "/movimientos", "destination": "/movimientos.html" },
+    { "source": "/asignaciones", "destination": "/asignaciones.html" },
     { "source": "/admin", "destination": "/admin-maquinas.html" },
     { "source": "/admin/maquinas", "destination": "/admin-maquinas.html" },
     { "source": "/admin/operadores", "destination": "/admin-operadores.html" },
