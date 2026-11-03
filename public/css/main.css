@@ -170,3 +170,21 @@ body {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* Diálogo con formulario (Dialogo con onEnviar y ancho) */
+.admin-dialogo.ancho {
+  width: min(560px, calc(100% - 32px));
+}
+
+.admin-dialogo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 6px;
+  text-align: left;
+}
+
+.admin-dialogo-form .admin-dialogo-acciones {
+  margin-top: 4px;
+}

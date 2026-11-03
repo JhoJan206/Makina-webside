@@ -11,11 +11,17 @@ export const VISTAS = [
   { rutas: ['/solicitudes'], vista: 'solicitudes.html' },
   { rutas: ['/solicitud/:id'], vista: 'solicitud.html' },
   { rutas: ['/movimientos'], vista: 'movimientos.html' },
-  { rutas: ['/asignaciones'], vista: 'asignaciones.html' },
-  { rutas: ['/admin', '/admin/maquinas'], vista: 'admin-maquinas.html' },
-  { rutas: ['/admin/operadores'], vista: 'admin-operadores.html' },
-  { rutas: ['/admin/clientes'], vista: 'admin-clientes.html' },
+  { rutas: ['/clientes'], vista: 'clientes.html' },
 ];
+
+// Rutas de vistas que ya no existen -> su página actual (también en vercel.json)
+export const REDIRECCIONES = {
+  '/admin': '/maquinaria',
+  '/admin/maquinas': '/maquinaria',
+  '/admin/operadores': '/operadores',
+  '/admin/clientes': '/clientes',
+  '/asignaciones': '/maquinaria',
+};
 
 export function vistaDeRuta(ruta) {
   for (const { rutas, vista } of VISTAS) {

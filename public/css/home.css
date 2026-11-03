@@ -174,10 +174,6 @@ img {
   stroke-width: 2.1;
 }
 
-.nav-texto-corto {
-  display: none;
-}
-
 .nav-item:hover {
   color: var(--negro);
   background: rgba(17, 17, 17, 0.08);
@@ -1962,14 +1958,6 @@ img {
     white-space: nowrap;
   }
 
-  /* En la barra inferior se usa la etiqueta corta */
-  .nav-texto-largo {
-    display: none;
-  }
-
-  .nav-texto-corto {
-    display: inline;
-  }
 
   .sidebar-pie {
     display: none;
@@ -2321,5 +2309,20 @@ img {
 
   .tabla-valor {
     font-size: 10px;
+  }
+}
+
+/* ===== Fila de 3 cifras (todas las páginas menos Inicio) ===== */
+.stats-grid.tres {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 680px) {
+  .stats-grid.tres {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stats-grid.tres > :nth-child(3) {
+    grid-column: 1 / -1;
   }
 }

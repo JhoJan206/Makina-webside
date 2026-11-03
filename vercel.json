@@ -10,24 +10,89 @@
       "maxDuration": 10
     }
   },
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/maquinaria",
+      "permanent": true
+    },
+    {
+      "source": "/admin/maquinas",
+      "destination": "/maquinaria",
+      "permanent": true
+    },
+    {
+      "source": "/admin/operadores",
+      "destination": "/operadores",
+      "permanent": true
+    },
+    {
+      "source": "/admin/clientes",
+      "destination": "/clientes",
+      "permanent": true
+    },
+    {
+      "source": "/asignaciones",
+      "destination": "/maquinaria",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api" },
-    { "source": "/", "destination": "/login.html" },
-    { "source": "/login", "destination": "/login.html" },
-    { "source": "/home", "destination": "/home.html" },
-    { "source": "/dashboard", "destination": "/home.html" },
-    { "source": "/maquinaria", "destination": "/maquinaria.html" },
-    { "source": "/maquinaria/:id", "destination": "/maquina.html" },
-    { "source": "/operadores", "destination": "/operadores.html" },
-    { "source": "/operador/:id", "destination": "/operador.html" },
-    { "source": "/solicitar", "destination": "/solicitar.html" },
-    { "source": "/solicitudes", "destination": "/solicitudes.html" },
-    { "source": "/solicitud/:id", "destination": "/solicitud.html" },
-    { "source": "/movimientos", "destination": "/movimientos.html" },
-    { "source": "/asignaciones", "destination": "/asignaciones.html" },
-    { "source": "/admin", "destination": "/admin-maquinas.html" },
-    { "source": "/admin/maquinas", "destination": "/admin-maquinas.html" },
-    { "source": "/admin/operadores", "destination": "/admin-operadores.html" },
-    { "source": "/admin/clientes", "destination": "/admin-clientes.html" }
+    {
+      "source": "/api/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/home.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/home.html"
+    },
+    {
+      "source": "/maquinaria",
+      "destination": "/maquinaria.html"
+    },
+    {
+      "source": "/maquinaria/:id",
+      "destination": "/maquina.html"
+    },
+    {
+      "source": "/operadores",
+      "destination": "/operadores.html"
+    },
+    {
+      "source": "/operador/:id",
+      "destination": "/operador.html"
+    },
+    {
+      "source": "/solicitar",
+      "destination": "/solicitar.html"
+    },
+    {
+      "source": "/solicitudes",
+      "destination": "/solicitudes.html"
+    },
+    {
+      "source": "/solicitud/:id",
+      "destination": "/solicitud.html"
+    },
+    {
+      "source": "/movimientos",
+      "destination": "/movimientos.html"
+    },
+    {
+      "source": "/clientes",
+      "destination": "/clientes.html"
+    }
   ]
 }

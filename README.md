@@ -19,14 +19,16 @@ makina-webside/
 │   │   ├── *.jsx         # Entradas de cada vista (cargan datos y montan React)
 │   │   ├── api/
 │   │   │   └── cliente.js  # fetch a /api con la cookie de sesión
-│   │   ├── components/   # Componentes reutilizables (Sidebar, Topbar, Chart, AdminCrud, Dialogo...)
+│   │   ├── components/   # Componentes reutilizables (Sidebar, Topbar, Chart, Dialogo,
+│   │   │                 #   AdminCrud = useCrud/TablaCrud, DialogosAsignacion...)
 │   │   ├── data/
 │   │   │   ├── cargar.jsx      # Carga los datos de la API antes de montar la vista
 │   │   │   ├── datos.js        # Caché de máquinas, operadores, clientes, movimientos + helpers
+│   │   │   ├── gestion.js      # Campos y reglas del CRUD de máquinas, operadores y clientes
 │   │   │   ├── asignaciones.js # Operador ↔ máquina (asignar / cerrar vía API)
 │   │   │   ├── solicitudes.js  # Solicitudes (crear / cambiar estado vía API)
 │   │   │   └── movimientos.js  # Ingresos y egresos (registrar / eliminar vía API)
-│   │   ├── pages/        # Vistas escritas en React (Admin*.jsx = gestión)
+│   │   ├── pages/        # Vistas escritas en React
 │   │   └── dist/         # Build generado por Vite (ignorado por Git)
 │   └── views/            # HTML de entrada de cada vista
 │
@@ -75,28 +77,31 @@ makina-webside/
 | ---------------------- | -------------------------------- | ------- |
 | `/` o `/login`         | Login                            | Empresa |
 | `/home` o `/dashboard` | Dashboard                        | Empresa |
-| `/maquinaria`          | Listado de maquinaria            | Empresa |
-| `/maquinaria/:id`      | Detalle de una máquina (id o placa) | Empresa |
-| `/operadores`          | Listado de operadores            | Empresa |
-| `/operador/:id`        | Detalle de un operador           | Empresa |
+| `/maquinaria`          | Flota: listado + crear, editar y eliminar máquinas | Empresa |
+| `/maquinaria/:id`      | Detalle de una máquina (id o placa): asignar / cambiar / cerrar operador | Empresa |
+| `/operadores`          | Equipo: listado + crear, editar y eliminar operadores | Empresa |
+| `/operador/:id`        | Detalle de un operador: asignar / cambiar / cerrar máquina | Empresa |
+| `/clientes`            | Clientes: crear, editar y eliminar, con sus solicitudes e ingresos | Empresa |
 | `/solicitudes`         | Solicitudes recibidas            | Empresa |
 | `/solicitud/:id`       | Detalle de una solicitud         | Empresa |
 | `/movimientos`         | Registro de ingresos y egresos (y eliminarlos) | Empresa |
-| `/asignaciones`        | Asignar operadores a máquinas y cerrar asignaciones | Empresa |
-| `/admin/maquinas` (o `/admin`) | Crear, editar y eliminar máquinas   | Empresa |
-| `/admin/operadores`    | Crear, editar y eliminar operadores | Empresa |
-| `/admin/clientes`      | Crear, editar y eliminar clientes   | Empresa |
 | `/solicitar`           | Formulario de solicitud          | Clientes |
+
+Rutas antiguas que redirigen (301/308): `/admin` y `/admin/maquinas` → `/maquinaria`,
+`/admin/operadores` → `/operadores`, `/admin/clientes` → `/clientes`,
+`/asignaciones` → `/maquinaria`. Están en `REDIRECCIONES` de `src/config/vistas.js`
+(servidor local) y en `redirects` de `vercel.json`.
 
 ## Separación de áreas
 
 - **Empresa** (`/login` en adelante): requiere sesión. Administra maquinaria,
   operadores, movimientos y las solicitudes que llegan de los clientes. Si no hay
   sesión, cualquier vista redirige a `/login`.
-- **Gestión** (`/admin/*`): dentro del área de la empresa. Cualquier persona que
-  haya iniciado sesión puede crear, editar y eliminar máquinas, operadores y
-  clientes. Aparece en el menú lateral como "Gestión" y con botones "Gestionar…"
-  en Maquinaria y Operadores.
+- **Gestión**: cualquier persona que haya iniciado sesión puede crear, editar y
+  eliminar máquinas, operadores y clientes desde sus propias páginas (botón
+  "Nuevo…" y botones de editar / eliminar en cada tarjeta o fila; el formulario
+  se abre en un diálogo). Las asignaciones operador ↔ máquina se hacen desde el
+  detalle de la máquina o del operador.
 - **Clientes** (`/solicitar`): pública. Solo contiene el formulario de solicitud;
   usa los endpoints `/api/publico/*` y no tiene acceso a datos de la empresa.
 - Toda solicitud enviada desde `/solicitar` se guarda en la base de datos y

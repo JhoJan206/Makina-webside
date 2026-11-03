@@ -1,8 +1,7 @@
 import {
+  BuildingIcon,
   ClipboardIcon,
   HomeIcon,
-  LinkIcon,
-  SettingsIcon,
   TruckIcon,
   UsersIcon,
   WalletIcon,
@@ -12,10 +11,9 @@ const enlaces = [
   { texto: 'Inicio', Icono: HomeIcon, href: '/home' },
   { texto: 'Maquinaria', Icono: TruckIcon, href: '/maquinaria' },
   { texto: 'Operadores', Icono: UsersIcon, href: '/operadores' },
-  { texto: 'Asignaciones', corto: 'Trabajos', Icono: LinkIcon, href: '/asignaciones' },
+  { texto: 'Clientes', Icono: BuildingIcon, href: '/clientes' },
   { texto: 'Solicitudes', Icono: ClipboardIcon, href: '/solicitudes' },
-  { texto: 'Movimientos', corto: 'Finanzas', Icono: WalletIcon, href: '/movimientos' },
-  { texto: 'Gestión', Icono: SettingsIcon, href: '/admin/maquinas' },
+  { texto: 'Movimientos', Icono: WalletIcon, href: '/movimientos' },
 ];
 
 export default function Sidebar({ activo = 'Inicio' }) {
@@ -31,7 +29,7 @@ export default function Sidebar({ activo = 'Inicio' }) {
       </div>
 
       <nav className="nav" aria-label="Principal">
-        {enlaces.map(({ texto, corto, Icono, href }) => {
+        {enlaces.map(({ texto, Icono, href }) => {
           const esActivo = texto === activo;
 
           return (
@@ -44,10 +42,7 @@ export default function Sidebar({ activo = 'Inicio' }) {
               <span className="nav-icono">
                 <Icono />
               </span>
-              <span className="nav-texto">
-                <span className="nav-texto-largo">{texto}</span>
-                <span className="nav-texto-corto">{corto ?? texto}</span>
-              </span>
+              <span className="nav-texto">{texto}</span>
             </a>
           );
         })}

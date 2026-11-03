@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import Chart from '../components/Chart.jsx';
+import {
+  DialogoAsignar,
+  DialogoCerrarAsignacion,
+  textoDias,
+} from '../components/DialogosAsignacion.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import NoEncontrado from '../components/NoEncontrado.jsx';
 import Sidebar from '../components/Sidebar.jsx';
@@ -7,13 +11,16 @@ import StatCard from '../components/StatCard.jsx';
 import Topbar from '../components/Topbar.jsx';
 import {
   ArrowLeftIcon,
-  ArrowRightIcon,
+  CheckIcon,
   ClockIcon,
   DollarIcon,
+  LinkIcon,
   MapPinIcon,
+  StopIcon,
   TruckIcon,
   UsersIcon,
 } from '../components/Icons.jsx';
+import { diasEntre, fechaDeHoy, listarAsignaciones } from '../data/asignaciones.js';
 import {
   formatearFecha,
   formatearMoneda,
@@ -40,6 +47,14 @@ export default function Operador() {
   const idRuta = window.location.pathname.split('/').filter(Boolean).pop();
   const operador = obtenerOperador(idRuta);
   const [tab, setTab] = useState('todos');
+  // 'asignar' | 'cerrar' | null
+  const [dialogo, setDialogo] = useState(null);
+  const [aviso, setAviso] = useState('');
+
+  function terminarDialogo(mensaje) {
+    setDialogo(null);
+    setAviso(mensaje);
+  }
 
   if (!operador) {
     return (
@@ -59,6 +74,10 @@ export default function Operador() {
   const resumen = resumenOperador(operador.id_operador);
   const historial = historialMaquinas(operador.id_operador);
   const registros = registrosOperador(operador.id_operador);
+  const asignacionActual =
+    listarAsignaciones().find(
+      (fila) => fila.activa && fila.id_operador === operador.id_operador,
+    ) ?? null;
 
   const visibles =
     tab === 'todos'
@@ -122,45 +141,58 @@ export default function Operador() {
               </div>
 
               <div className="detalle-hero-acciones">
-                <a className="btn btn-primario" href="/maquinaria">
-                  Ver maquinaria
-                  <ArrowRightIcon />
-                </a>
-                <a className="btn btn-fantasma" href="/operadores">
-                  Ver equipo
-                </a>
+                <button
+                  className="btn btn-primario"
+                  type="button"
+                  onClick={() => setDialogo('asignar')}
+                >
+                  <LinkIcon />
+                  {maquina ? 'Cambiar máquina' : 'Asignar máquina'}
+                </button>
+                {asignacionActual && (
+                  <button
+                    className="btn btn-fantasma"
+                    type="button"
+                    onClick={() => setDialogo('cerrar')}
+                  >
+                    <StopIcon />
+                    Cerrar asignación
+                  </button>
+                )}
               </div>
             </div>
           </section>
 
-          <section className="stats-grid" aria-label="Resumen del operador">
-            <StatCard
-              etiqueta="Máquinas asignadas"
-              valor={resumen.maquinas}
-              detalle="Asignaciones activas"
-              Icono={UsersIcon}
-              tono="neutro"
-            />
+          {aviso && (
+            <p className="admin-aviso" role="status">
+              <CheckIcon />
+              {aviso}
+            </p>
+          )}
+
+          <section className="stats-grid tres" aria-label="Resumen del operador">
             <StatCard
               etiqueta="Horas trabajadas"
               valor={`${resumen.horas} h`}
-              detalle="Acumulado del periodo"
+              detalle="En su máquina actual este mes"
               Icono={ClockIcon}
               tono="azul"
             />
             <StatCard
               etiqueta="Ingresos generados"
               valor={formatearMoneda(resumen.ingresos)}
-              detalle="Facturación asociada"
+              detalle="Facturación de su máquina este mes"
               Icono={DollarIcon}
               tono="verde"
             />
             <StatCard
-              etiqueta="Sueldo"
-              valor={formatearMoneda(operador.sueldo, false)}
-              detalle="Pago mensual"
-              Icono={DollarIcon}
-              tono="ambar"
+              etiqueta="Asignación actual"
+              valor={asignacionActual ? textoDias(asignacionActual.dias) : '—'}
+              detalle={`${historial.length} ${
+                historial.length === 1 ? 'asignación' : 'asignaciones'
+              } en su historial`}
+              Icono={UsersIcon}
+              tono="neutro"
             />
           </section>
 
@@ -241,46 +273,66 @@ export default function Operador() {
                 </div>
               </header>
 
-              <div className="historial-lista">
-                {historial.map(
-                  ({ id, maquina: equipo, fecha_ingreso, fecha_salida }) => {
-                    const actual = fecha_salida === null;
+              {historial.length > 0 ? (
+                <div className="historial-lista">
+                  {historial.map(
+                    ({ id, maquina: equipo, fecha_ingreso, fecha_salida }) => {
+                      const actual = fecha_salida === null;
+                      const dias = diasEntre(fecha_ingreso, fecha_salida ?? fechaDeHoy());
 
-                    return (
-                      <div className="historial-item" key={id}>
-                        <span className="avatar-circulo" aria-hidden="true">
-                          {inicialesMaquina(equipo)}
-                        </span>
+                      return (
+                        <div className="historial-item" key={id}>
+                          <span className="avatar-circulo" aria-hidden="true">
+                            {inicialesMaquina(equipo)}
+                          </span>
 
-                        <div className="historial-info">
-                          <p className="historial-titulo">
-                            {nombreMaquina(equipo)}
-                          </p>
-                          <p className="historial-sub">
-                            {actual
-                              ? `Desde ${formatearFecha(fecha_ingreso, true)}`
-                              : `${formatearFecha(fecha_ingreso, true)} – ${formatearFecha(fecha_salida, true)}`}
-                          </p>
+                          <div className="historial-info">
+                            <a
+                              className="historial-titulo"
+                              href={`/maquinaria/${encodeURIComponent(equipo.placa)}`}
+                            >
+                              {nombreMaquina(equipo)}
+                            </a>
+                            <p className="historial-sub">
+                              {actual
+                                ? `Desde ${formatearFecha(fecha_ingreso, true)}`
+                                : `${formatearFecha(fecha_ingreso, true)} – ${formatearFecha(fecha_salida, true)}`}
+                              {` · ${textoDias(dias)}`}
+                            </p>
+                          </div>
+
+                          {actual && <span className="pastilla verde">Actual</span>}
                         </div>
-
-                        {actual && <span className="pastilla verde">Actual</span>}
-                      </div>
-                    );
-                  },
-                )}
-              </div>
+                      );
+                    },
+                  )}
+                </div>
+              ) : (
+                <EmptyState
+                  Icono={TruckIcon}
+                  titulo="Sin asignaciones"
+                  texto="Este operador todavía no ha manejado ninguna máquina."
+                />
+              )}
             </aside>
           </div>
-
-          {resumen.horas > 0 && (
-            <Chart
-              idsMaquinas={historial
-                .filter((asignacion) => !asignacion.fecha_salida)
-                .map((asignacion) => asignacion.id_maquina)}
-            />
-          )}
         </main>
       </div>
+
+      {dialogo === 'asignar' && (
+        <DialogoAsignar
+          operador={operador}
+          onCerrar={() => setDialogo(null)}
+          onAsignado={terminarDialogo}
+        />
+      )}
+      {dialogo === 'cerrar' && asignacionActual && (
+        <DialogoCerrarAsignacion
+          asignacion={asignacionActual}
+          onCerrar={() => setDialogo(null)}
+          onCerrada={terminarDialogo}
+        />
+      )}
     </div>
   );
 }

@@ -1,40 +1,37 @@
+import { AccionesCrud, AvisoCrud, useCrud } from '../components/AdminCrud.jsx';
+import EmptyState from '../components/EmptyState.jsx';
 import {
   ArrowRightIcon,
-  CheckIcon,
-  ClockIcon,
   DollarIcon,
-  SettingsIcon,
+  PlusIcon,
   TruckIcon,
+  UserIcon,
 } from '../components/Icons.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import StatCard from '../components/StatCard.jsx';
 import Topbar from '../components/Topbar.jsx';
 import {
+  formatearFecha,
   formatearMoneda,
   inicialesOperador,
-  maquinas,
   nombreMaquina,
   nombreOperador,
   obraActualMaquina,
+  obtenerAsignacionActualMaquina,
   obtenerOperadorActual,
   promedioValorHora,
   resumenMaquina,
   tipoMaquinaVisible,
 } from '../data/datos.js';
+import { crudMaquinas } from '../data/gestion.js';
 
 export default function Maquinaria() {
-  const activas = maquinas.filter((maquina) =>
-    Boolean(obtenerOperadorActual(maquina.id_maquina)),
+  const crud = useCrud(crudMaquinas);
+  const maquinas = crud.filas;
+  const sinOperador = maquinas.filter(
+    (maquina) => !obtenerOperadorActual(maquina.id_maquina),
   ).length;
-  const horas = maquinas.reduce(
-    (total, maquina) => total + resumenMaquina(maquina.id_maquina).horas,
-    0,
-  );
-  const ingresos = maquinas.reduce(
-    (total, maquina) => total + resumenMaquina(maquina.id_maquina).ingresos,
-    0,
-  );
 
   return (
     <div className="dashboard pagina-maquinaria">
@@ -47,129 +44,134 @@ export default function Maquinaria() {
           <PageHeader
             eyebrow="Flota"
             titulo="Maquinaria"
-            descripcion="Consulta el estado, la operación y el rendimiento de cada equipo."
+            descripcion="Registra, edita y consulta el estado y la operación de cada equipo."
             acciones={
-              <a className="btn btn-primario" href="/admin/maquinas">
-                <SettingsIcon />
-                Gestionar máquinas
-              </a>
+              <button className="btn btn-primario" type="button" onClick={crud.nuevo}>
+                <PlusIcon />
+                Nueva máquina
+              </button>
             }
           />
 
-          <section className="stats-grid" aria-label="Resumen de maquinaria">
+          <AvisoCrud crud={crud} />
+
+          <section className="stats-grid tres" aria-label="Resumen de maquinaria">
             <StatCard
-              etiqueta="Equipos en flota"
+              etiqueta="Equipos"
               valor={maquinas.length}
-              detalle="Maquinaria registrada"
+              detalle="Máquinas registradas"
               Icono={TruckIcon}
               tono="neutro"
             />
             <StatCard
-              etiqueta="Equipos activos"
-              valor={activas}
-              detalle={`${maquinas.length - activas} sin operador`}
-              Icono={CheckIcon}
-              tono="verde"
+              etiqueta="Sin operador"
+              valor={sinOperador}
+              detalle={`${maquinas.length - sinOperador} con asignación activa`}
+              Icono={UserIcon}
+              tono={sinOperador > 0 ? 'ambar' : 'verde'}
             />
             <StatCard
-              etiqueta="Valor promedio"
+              etiqueta="Valor/hora promedio"
               valor={`${formatearMoneda(promedioValorHora(), false)}/h`}
-              detalle="Tarifa promedio por hora"
+              detalle="Tarifa promedio de la flota"
               Icono={DollarIcon}
-              tono="ambar"
-            />
-            <StatCard
-              etiqueta="Horas del mes"
-              valor={`${horas} h`}
-              detalle={`${formatearMoneda(ingresos)} facturados`}
-              Icono={ClockIcon}
               tono="azul"
             />
           </section>
 
-          <section className="maquinaria-grid" aria-label="Listado de maquinaria">
-            {maquinas.map((maquina) => {
-              const operador = obtenerOperadorActual(maquina.id_maquina);
-              const resumen = resumenMaquina(maquina.id_maquina);
-              const activa = Boolean(operador);
+          {maquinas.length === 0 ? (
+            <EmptyState
+              Icono={TruckIcon}
+              titulo="Aún no hay máquinas"
+              texto="Registra la primera máquina con el botón Nueva máquina."
+            />
+          ) : (
+            <section className="maquinaria-grid" aria-label="Listado de maquinaria">
+              {maquinas.map((maquina) => {
+                const operador = obtenerOperadorActual(maquina.id_maquina);
+                const asignacion = obtenerAsignacionActualMaquina(maquina.id_maquina);
+                const resumen = resumenMaquina(maquina.id_maquina);
+                const activa = Boolean(operador);
 
-              return (
-                <article className="maquina-card" key={maquina.id_maquina}>
-                  <div className="maquina-card-media">
-                    <img src={maquina.imagen} alt={maquina.alt} />
-                    <span className="maquina-card-placa">
-                      Placa {maquina.placa}
-                    </span>
-                    <span
-                      className={`pastilla maquina-card-estado ${
-                        activa ? 'verde' : 'gris'
-                      }`}
-                    >
-                      {activa ? 'Activa' : 'Sin operador'}
-                    </span>
-                  </div>
-
-                  <div className="maquina-card-cuerpo">
-                    <div className="maquina-card-cabecera">
-                      <div className="maquina-card-titulo">
-                        <p className="panel-eyebrow">
-                          {tipoMaquinaVisible(maquina.tipo)}
-                        </p>
-                        <h2>{nombreMaquina(maquina)}</h2>
-                      </div>
-
-                      <p className="maquina-card-precio">
-                        {formatearMoneda(maquina.valor_hora, false)}
-                        <span>/hora</span>
-                      </p>
-                    </div>
-
-                    <dl className="maquina-card-datos">
-                      <div>
-                        <dt>Operador</dt>
-                        <dd>
-                          {operador ? nombreOperador(operador) : 'Sin asignar'}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>Obra actual</dt>
-                        <dd>{obraActualMaquina(maquina.id_maquina)}</dd>
-                      </div>
-                      <div>
-                        <dt>Horas del mes</dt>
-                        <dd>{resumen.horas} h</dd>
-                      </div>
-                      <div>
-                        <dt>Ingresos del mes</dt>
-                        <dd>{formatearMoneda(resumen.ingresos)}</dd>
-                      </div>
-                    </dl>
-
-                    <div className="maquina-card-pie">
-                      <span className="operador-mini">
-                        <span className="avatar-circulo" aria-hidden="true">
-                          {operador ? inicialesOperador(operador) : '—'}
-                        </span>
-                        <span>
-                          {operador ? nombreOperador(operador) : 'Sin asignar'}
-                        </span>
-                      </span>
-
-                      <a
-                        className="btn btn-mini"
-                        href={`/maquinaria/${maquina.placa}`}
+                return (
+                  <article className="maquina-card" key={maquina.id_maquina}>
+                    <div className="maquina-card-media">
+                      <img src={maquina.imagen} alt={maquina.alt} />
+                      <span className="maquina-card-placa">Placa {maquina.placa}</span>
+                      <span
+                        className={`pastilla maquina-card-estado ${activa ? 'verde' : 'gris'}`}
                       >
-                        Ver detalle
-                        <ArrowRightIcon />
-                      </a>
+                        {activa ? 'Activa' : 'Sin operador'}
+                      </span>
                     </div>
-                  </div>
-                </article>
-              );
-            })}
-          </section>
+
+                    <div className="maquina-card-cuerpo">
+                      <div className="maquina-card-cabecera">
+                        <div className="maquina-card-titulo">
+                          <p className="panel-eyebrow">{tipoMaquinaVisible(maquina.tipo)}</p>
+                          <h2>{nombreMaquina(maquina)}</h2>
+                        </div>
+
+                        <p className="maquina-card-precio">
+                          {formatearMoneda(maquina.valor_hora, false)}
+                          <span>/hora</span>
+                        </p>
+                      </div>
+
+                      <dl className="maquina-card-datos">
+                        <div>
+                          <dt>Operador</dt>
+                          <dd>{operador ? nombreOperador(operador) : 'Sin asignar'}</dd>
+                        </div>
+                        <div>
+                          <dt>Obra actual</dt>
+                          <dd>{obraActualMaquina(maquina.id_maquina)}</dd>
+                        </div>
+                        <div>
+                          <dt>Operando desde</dt>
+                          <dd>
+                            {asignacion ? formatearFecha(asignacion.fecha_ingreso, true) : '—'}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Ingresos del mes</dt>
+                          <dd>{formatearMoneda(resumen.ingresos)}</dd>
+                        </div>
+                      </dl>
+
+                      <div className="maquina-card-pie">
+                        <span className="operador-mini">
+                          <span className="avatar-circulo" aria-hidden="true">
+                            {operador ? inicialesOperador(operador) : '—'}
+                          </span>
+                          <span>{operador ? nombreOperador(operador) : 'Sin asignar'}</span>
+                        </span>
+
+                        <span className="tarjeta-acciones">
+                          <AccionesCrud
+                            crud={crud}
+                            fila={maquina}
+                            nombre={nombreMaquina(maquina)}
+                          />
+                          <a
+                            className="btn btn-mini"
+                            href={`/maquinaria/${encodeURIComponent(maquina.placa)}`}
+                          >
+                            Ver detalle
+                            <ArrowRightIcon />
+                          </a>
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </section>
+          )}
         </main>
       </div>
+
+      {crud.dialogos}
     </div>
   );
 }

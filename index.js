@@ -3,7 +3,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import app from './src/app.js';
-import { VISTAS, vistaDeRuta } from './src/config/vistas.js';
+import { REDIRECCIONES, VISTAS, vistaDeRuta } from './src/config/vistas.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,6 +14,16 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
 const DIST_DIR = path.join(PUBLIC_DIR, 'js', 'dist');
 
 const server = http.createServer(app);
+
+// Enlaces viejos (pantallas de Gestión y Asignaciones) -> su página actual
+app.use((req, res, next) => {
+  const ruta = req.path.replace(/\/+$/, '') || '/';
+  const destino = REDIRECCIONES[ruta];
+  if (!destino) return next();
+
+  const consulta = req.url.slice(req.path.length);
+  res.redirect(301, destino + consulta);
+});
 
 if (isDev) {
   // Desarrollo: React se sirve con Vite en modo middleware (hot reload, sin build)

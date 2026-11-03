@@ -48,10 +48,7 @@ export default defineConfig(({ command }) => {
               'views/solicitudes.html',
               'views/solicitud.html',
               'views/movimientos.html',
-              'views/asignaciones.html',
-              'views/admin-maquinas.html',
-              'views/admin-operadores.html',
-              'views/admin-clientes.html',
+              'views/clientes.html',
             ]
           : [
               'login.html',
@@ -64,10 +61,7 @@ export default defineConfig(({ command }) => {
               'solicitudes.html',
               'solicitud.html',
               'movimientos.html',
-              'asignaciones.html',
-              'admin-maquinas.html',
-              'admin-operadores.html',
-              'admin-clientes.html',
+              'clientes.html',
             ],
       },
     },

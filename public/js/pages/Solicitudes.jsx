@@ -65,7 +65,7 @@ export default function Solicitudes() {
             descripcion="Revisa los requerimientos de tus clientes y dales seguimiento."
           />
 
-          <section className="stats-grid" aria-label="Resumen de solicitudes">
+          <section className="stats-grid tres" aria-label="Resumen de solicitudes">
             <StatCard
               etiqueta="Pendientes"
               valor={resumen.pendientes}
@@ -83,16 +83,9 @@ export default function Solicitudes() {
             <StatCard
               etiqueta="Aprobadas"
               valor={resumen.aprobadas}
-              detalle="Listas para programar"
+              detalle={`${resumen.completadas} completadas · ${resumen.total} en total`}
               Icono={CheckIcon}
               tono="verde"
-            />
-            <StatCard
-              etiqueta="Completadas"
-              valor={resumen.completadas}
-              detalle={`${resumen.total} solicitudes en total`}
-              Icono={CheckIcon}
-              tono="negro"
             />
           </section>
 

@@ -15,7 +15,6 @@ import {
   TrendingDownIcon,
   TrendingUpIcon,
   TruckIcon,
-  WalletIcon,
 } from '../components/Icons.jsx';
 import {
   formatearFecha,
@@ -119,11 +118,6 @@ export default function Movimientos() {
   }, [busqueda, filtro, movimientos]);
 
   const visibles = mostrarTodos ? filtrados : filtrados.slice(0, 10);
-
-  const balanceTexto =
-    resumen.balance < 0
-      ? `−${formatearMoneda(Math.abs(resumen.balance))}`
-      : formatearMoneda(resumen.balance);
 
   function actualizar(campo, valor) {
     setFormulario((actual) => ({ ...actual, [campo]: valor }));
@@ -256,34 +250,27 @@ export default function Movimientos() {
             descripcion="Registra los movimientos de la flota y consulta el historial en un solo lugar."
           />
 
-          <section className="stats-grid" aria-label="Resumen de movimientos">
+          <section className="stats-grid tres" aria-label="Resumen de movimientos">
             <StatCard
-              etiqueta="Ingresos"
-              valor={formatearMoneda(resumen.ingresos)}
-              detalle={`${resumen.cantidadIngresos} registros de entrada`}
+              etiqueta="Registros"
+              valor={resumen.total}
+              detalle="Movimientos en el historial"
+              Icono={ClipboardIcon}
+              tono="neutro"
+            />
+            <StatCard
+              etiqueta="Entradas"
+              valor={resumen.cantidadIngresos}
+              detalle="Ingresos registrados"
               Icono={TrendingUpIcon}
               tono="verde"
             />
             <StatCard
-              etiqueta="Egresos"
-              valor={formatearMoneda(resumen.egresos)}
-              detalle={`${resumen.cantidadEgresos} registros de salida`}
+              etiqueta="Salidas"
+              valor={resumen.cantidadEgresos}
+              detalle="Egresos registrados"
               Icono={TrendingDownIcon}
               tono="rojo"
-            />
-            <StatCard
-              etiqueta="Balance"
-              valor={balanceTexto}
-              detalle="Ingresos menos egresos"
-              Icono={WalletIcon}
-              tono={resumen.balance < 0 ? 'rojo' : 'ambar'}
-            />
-            <StatCard
-              etiqueta="Movimientos"
-              valor={resumen.total}
-              detalle={`${resumen.horas} horas facturadas`}
-              Icono={ClipboardIcon}
-              tono="azul"
             />
           </section>
 
