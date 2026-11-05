@@ -7,9 +7,64 @@
 
 .movimientos-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.45fr);
+  /* El historial siempre tiene ancho suficiente para todas sus columnas */
+  grid-template-columns: minmax(300px, 1fr) minmax(640px, 2fr);
   align-items: start;
   gap: 20px;
+}
+
+/* ----- Resumen compacto (Registros / Entradas / Salidas) ----- */
+.stats-grid.mov-resumen {
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.mov-resumen .stat-card {
+  display: grid;
+  grid-template-areas:
+    "top valor"
+    "detalle valor";
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 2px;
+  padding: 12px 16px;
+  border-radius: var(--radio-sm);
+}
+
+.mov-resumen .stat-card-top {
+  grid-area: top;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.mov-resumen .stat-card-icono {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+
+.mov-resumen .stat-card-icono svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mov-resumen .stat-card-etiqueta {
+  font-size: 13px;
+}
+
+.mov-resumen .stat-card-valor {
+  grid-area: valor;
+  margin: 0;
+  font-size: 22px;
+}
+
+.mov-resumen .stat-card-detalle {
+  grid-area: detalle;
+  margin: 0;
+  padding: 0 0 0 40px;
+  border-top: 0;
+  font-size: 11.5px;
 }
 
 /* ----- Formulario ----- */
@@ -144,6 +199,12 @@
   flex: none;
   width: 15px;
   height: 15px;
+}
+
+/* Formulario en una sola columna */
+.mov-form .form-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
 }
 
 .mov-form .form-seccion {
@@ -354,12 +415,12 @@
 
 .mov-fila {
   display: grid;
-  grid-template-columns: minmax(160px, 1.4fr) minmax(120px, 1fr) minmax(
-      110px,
-      0.95fr
-    ) 88px 104px 34px;
+  grid-template-columns: minmax(140px, 1.4fr) minmax(96px, 1fr) minmax(
+      90px,
+      0.9fr
+    ) 84px 100px 34px;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   padding: 13px 22px;
   border-bottom: 1px solid var(--borde-suave);
   transition: background 0.15s ease;
@@ -499,11 +560,114 @@
   outline: 0;
 }
 
-.mov-historial-pie {
+/* ----- Paginación del historial ----- */
+.mov-paginacion {
   display: flex;
-  justify-content: center;
-  padding: 14px 22px 18px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px 22px 14px;
+  background: #fcfcf9;
   border-top: 1px solid var(--borde-suave);
+}
+
+.mov-paginacion-info {
+  color: var(--texto-suave);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mov-paginacion-info strong {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+.mov-paginacion-controles {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mov-pagina {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  color: var(--texto-suave);
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--transicion), color var(--transicion),
+    border-color var(--transicion);
+}
+
+.mov-pagina svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mov-pagina:hover:not(:disabled):not(.activa) {
+  color: var(--negro);
+  background: var(--fondo);
+  border-color: #d2d2c9;
+}
+
+.mov-pagina.activa {
+  color: var(--amarillo);
+  background: var(--negro);
+  border-color: var(--negro);
+  cursor: default;
+}
+
+.mov-pagina:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mov-pagina:focus-visible {
+  outline: none;
+  box-shadow: var(--anillo-foco);
+}
+
+.mov-pagina-hueco {
+  min-width: 20px;
+  color: var(--texto-tenue);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+/* Resumen compacto en móvil: una fila por indicador */
+@media (max-width: 680px) {
+  .stats-grid.mov-resumen {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .stats-grid.mov-resumen > :nth-child(3) {
+    grid-column: auto;
+  }
+
+  .mov-resumen .stat-card {
+    padding: 10px 14px;
+  }
+
+  .mov-resumen .stat-card-valor {
+    font-size: 20px;
+  }
+}
+
+/* Sin espacio para formulario + historial lado a lado: se apilan */
+@media (max-width: 1300px) {
+  .movimientos-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* ===== Adaptación ===== */

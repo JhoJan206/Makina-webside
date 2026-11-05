@@ -6,6 +6,8 @@ import Sidebar from '../components/Sidebar.jsx';
 import StatCard from '../components/StatCard.jsx';
 import Topbar from '../components/Topbar.jsx';
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
   CheckIcon,
   ClipboardIcon,
   ClockIcon,
@@ -41,6 +43,23 @@ const FILTROS = [
   { id: 'egreso', texto: 'Egresos' },
 ];
 
+const POR_PAGINA = 10;
+
+// Números de página a mostrar: todos si son pocos; si no, la primera, la
+// última y las vecinas de la actual, con '…' en los huecos.
+function paginasVisibles(actual, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+  const paginas = new Set([1, total, actual - 1, actual, actual + 1]);
+  const ordenadas = [...paginas]
+    .filter((pagina) => pagina >= 1 && pagina <= total)
+    .sort((a, b) => a - b);
+
+  return ordenadas.flatMap((pagina, i) =>
+    i > 0 && pagina - ordenadas[i - 1] > 1 ? ['…', pagina] : [pagina],
+  );
+}
+
 function fechaDeHoy() {
   const fecha = new Date();
   const desplazamiento = fecha.getTimezoneOffset() * 60000;
@@ -70,7 +89,7 @@ export default function Movimientos() {
   const [enviando, setEnviando] = useState(false);
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
-  const [mostrarTodos, setMostrarTodos] = useState(false);
+  const [pagina, setPagina] = useState(1);
   const [porEliminar, setPorEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [errorEliminar, setErrorEliminar] = useState('');
@@ -117,7 +136,11 @@ export default function Movimientos() {
     });
   }, [busqueda, filtro, movimientos]);
 
-  const visibles = mostrarTodos ? filtrados : filtrados.slice(0, 10);
+  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / POR_PAGINA));
+  // Si se eliminan registros o cambia el filtro, la página nunca queda vacía
+  const paginaActual = Math.min(pagina, totalPaginas);
+  const inicio = (paginaActual - 1) * POR_PAGINA;
+  const visibles = filtrados.slice(inicio, inicio + POR_PAGINA);
 
   function actualizar(campo, valor) {
     setFormulario((actual) => ({ ...actual, [campo]: valor }));
@@ -135,6 +158,7 @@ export default function Movimientos() {
   function limpiarFiltros() {
     setBusqueda('');
     setFiltro('todos');
+    setPagina(1);
   }
 
   function pedirEliminar(movimiento) {
@@ -250,7 +274,10 @@ export default function Movimientos() {
             descripcion="Registra los movimientos de la flota y consulta el historial en un solo lugar."
           />
 
-          <section className="stats-grid tres" aria-label="Resumen de movimientos">
+          <section
+            className="stats-grid tres mov-resumen"
+            aria-label="Resumen de movimientos"
+          >
             <StatCard
               etiqueta="Registros"
               valor={resumen.total}
@@ -533,7 +560,10 @@ export default function Movimientos() {
                     type="search"
                     placeholder="Buscar por descripción, máquina o cliente…"
                     value={busqueda}
-                    onChange={(event) => setBusqueda(event.target.value)}
+                    onChange={(event) => {
+                      setBusqueda(event.target.value);
+                      setPagina(1);
+                    }}
                   />
                 </label>
 
@@ -549,7 +579,10 @@ export default function Movimientos() {
                       role="tab"
                       aria-selected={filtro === id}
                       className={filtro === id ? 'tab activo' : 'tab'}
-                      onClick={() => setFiltro(id)}
+                      onClick={() => {
+                        setFiltro(id);
+                        setPagina(1);
+                      }}
                     >
                       {texto}
                     </button>
@@ -659,18 +692,67 @@ export default function Movimientos() {
                     </div>
                   ))}
 
-                  {filtrados.length > 10 && (
-                    <div className="mov-historial-pie">
-                      <button
-                        className="btn btn-fantasma btn-mini"
-                        type="button"
-                        onClick={() => setMostrarTodos((valor) => !valor)}
-                      >
-                        {mostrarTodos
-                          ? 'Ver menos'
-                          : `Ver todos (${filtrados.length})`}
-                      </button>
-                    </div>
+                  {filtrados.length > POR_PAGINA && (
+                    <nav
+                      className="mov-paginacion"
+                      aria-label="Paginación del historial"
+                    >
+                      <p className="mov-paginacion-info">
+                        Mostrando <strong>{inicio + 1}</strong>–
+                        <strong>{inicio + visibles.length}</strong> de{' '}
+                        <strong>{filtrados.length}</strong>
+                      </p>
+
+                      <div className="mov-paginacion-controles">
+                        <button
+                          className="mov-pagina mov-pagina-flecha"
+                          type="button"
+                          onClick={() => setPagina(paginaActual - 1)}
+                          disabled={paginaActual === 1}
+                          aria-label="Página anterior"
+                        >
+                          <ArrowLeftIcon />
+                        </button>
+
+                        {paginasVisibles(paginaActual, totalPaginas).map(
+                          (numero, i) =>
+                            numero === '…' ? (
+                              <span
+                                key={`hueco-${i}`}
+                                className="mov-pagina-hueco"
+                                aria-hidden="true"
+                              >
+                                …
+                              </span>
+                            ) : (
+                              <button
+                                key={numero}
+                                className={`mov-pagina${
+                                  numero === paginaActual ? ' activa' : ''
+                                }`}
+                                type="button"
+                                onClick={() => setPagina(numero)}
+                                aria-label={`Página ${numero}`}
+                                aria-current={
+                                  numero === paginaActual ? 'page' : undefined
+                                }
+                              >
+                                {numero}
+                              </button>
+                            ),
+                        )}
+
+                        <button
+                          className="mov-pagina mov-pagina-flecha"
+                          type="button"
+                          onClick={() => setPagina(paginaActual + 1)}
+                          disabled={paginaActual === totalPaginas}
+                          aria-label="Página siguiente"
+                        >
+                          <ArrowRightIcon />
+                        </button>
+                      </div>
+                    </nav>
                   )}
                 </div>
               ) : (
