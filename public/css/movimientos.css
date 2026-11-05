@@ -13,58 +13,9 @@
   gap: 20px;
 }
 
-/* ----- Resumen compacto (Registros / Entradas / Salidas) ----- */
+/* El resumen compacto de las tarjetas es global (ver home.css) */
 .stats-grid.mov-resumen {
-  gap: 12px;
   margin-bottom: 0;
-}
-
-.mov-resumen .stat-card {
-  display: grid;
-  grid-template-areas:
-    "top valor"
-    "detalle valor";
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: 12px;
-  row-gap: 2px;
-  padding: 12px 16px;
-  border-radius: var(--radio-sm);
-}
-
-.mov-resumen .stat-card-top {
-  grid-area: top;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.mov-resumen .stat-card-icono {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-}
-
-.mov-resumen .stat-card-icono svg {
-  width: 15px;
-  height: 15px;
-}
-
-.mov-resumen .stat-card-etiqueta {
-  font-size: 13px;
-}
-
-.mov-resumen .stat-card-valor {
-  grid-area: valor;
-  margin: 0;
-  font-size: 22px;
-}
-
-.mov-resumen .stat-card-detalle {
-  grid-area: detalle;
-  margin: 0;
-  padding: 0 0 0 40px;
-  border-top: 0;
-  font-size: 11.5px;
 }
 
 /* ----- Formulario ----- */
@@ -641,26 +592,6 @@
   color: var(--texto-tenue);
   font-size: 12.5px;
   text-align: center;
-}
-
-/* Resumen compacto en móvil: una fila por indicador */
-@media (max-width: 680px) {
-  .stats-grid.mov-resumen {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-
-  .stats-grid.mov-resumen > :nth-child(3) {
-    grid-column: auto;
-  }
-
-  .mov-resumen .stat-card {
-    padding: 10px 14px;
-  }
-
-  .mov-resumen .stat-card-valor {
-    font-size: 20px;
-  }
 }
 
 /* Sin espacio para formulario + historial lado a lado: se apilan */
