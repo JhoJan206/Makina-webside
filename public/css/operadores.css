@@ -12,8 +12,8 @@
 .operador-card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
+  gap: 18px;
+  padding: 22px;
   background: var(--blanco);
   border: 1px solid var(--borde-tarjeta);
   border-radius: var(--radio);
@@ -25,7 +25,7 @@
 .operador-card:hover {
   border-color: #d9d9d0;
   box-shadow: var(--sombra-alta);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 .operador-card-cabecera {
@@ -39,15 +39,15 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
   color: #6b5200;
   background: linear-gradient(145deg, #fff3c4 0%, #ffd95c 100%);
   border: 1px solid #f0d47c;
-  border-radius: 16px;
+  border-radius: 14px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
 }
 
@@ -59,27 +59,29 @@
 .operador-card-identidad h2 {
   overflow: hidden;
   color: #1a1a18;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .operador-card-identidad p {
-  margin-top: 2px;
+  margin-top: 3px;
   color: var(--texto-tenue);
-  font-size: 11px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
 }
 
 .operador-card-equipo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 12px;
+  gap: 12px;
+  padding: 12px 14px;
   background: #f7f7f1;
-  border-radius: 12px;
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-sm);
 }
 
 .operador-card-equipo-icono {
@@ -103,9 +105,9 @@
 .operador-card-equipo-label {
   display: block;
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -114,8 +116,8 @@
   margin-top: 2px;
   overflow: hidden;
   color: #222;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -129,8 +131,8 @@
 
 .operador-card-datos dt {
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -139,8 +141,9 @@
   margin-top: 4px;
   overflow-wrap: anywhere;
   color: #222;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .operador-card-pie {
@@ -160,7 +163,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--texto-tenue);
-  font-size: 10.5px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

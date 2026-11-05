@@ -49,6 +49,7 @@ body {
   border: 1px solid #111;
   border-radius: 10px;
   cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
 .carga-estado button:hover {
@@ -72,13 +73,36 @@ body {
 .admin-dialogo {
   width: min(420px, calc(100% - 32px));
   padding: 0;
-  border: 0;
-  border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--borde-tarjeta);
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(17, 17, 17, 0.06), 0 28px 64px rgba(17, 17, 17, 0.22);
+}
+
+.admin-dialogo[open] {
+  animation: dialogo-aparecer 0.18s ease-out;
+}
+
+@keyframes dialogo-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-dialogo[open] {
+    animation: none;
+  }
 }
 
 .admin-dialogo::backdrop {
-  background: rgba(17, 17, 17, 0.45);
+  background: rgba(17, 17, 17, 0.5);
+  backdrop-filter: blur(3px);
 }
 
 .admin-dialogo-cuerpo {
@@ -86,7 +110,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 26px 22px 22px;
+  padding: 28px 26px 24px;
   text-align: center;
 }
 
@@ -112,16 +136,18 @@ body {
 }
 
 .admin-dialogo h2 {
+  margin-top: 4px;
   color: #1c1c1a;
   font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
 }
 
 .admin-dialogo p {
   color: var(--texto-suave);
-  font-size: 12.5px;
-  line-height: 1.5;
+  font-size: 13.5px;
+  line-height: 1.55;
 }
 
 .admin-dialogo .form-error {
@@ -132,12 +158,12 @@ body {
   display: flex;
   gap: 10px;
   width: 100%;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .admin-dialogo-acciones .btn {
   flex: 1;
-  min-height: 44px;
+  min-height: 42px;
 }
 
 .admin-dialogo-icono.aviso {
@@ -147,12 +173,13 @@ body {
 
 .admin-dialogo-detalle {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
   color: var(--texto);
   background: #f7f7f1;
+  border: 1px solid var(--borde-suave);
   border-radius: 10px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   line-height: 1.5;
 }
 
@@ -179,12 +206,37 @@ body {
 .admin-dialogo-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 10px;
   text-align: left;
 }
 
 .admin-dialogo-form .admin-dialogo-acciones {
-  margin-top: 4px;
+  margin-top: 6px;
+  padding-top: 18px;
+  border-top: 1px solid var(--borde-suave);
+}
+
+/* Diálogo ancho (formularios): cabecera alineada a la izquierda */
+.admin-dialogo.ancho .admin-dialogo-cuerpo {
+  align-items: stretch;
+  padding: 26px 28px 24px;
+  text-align: left;
+}
+
+.admin-dialogo.ancho .admin-dialogo-icono {
+  align-self: flex-start;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+.admin-dialogo.ancho .admin-dialogo-acciones {
+  justify-content: flex-end;
+}
+
+.admin-dialogo.ancho .admin-dialogo-acciones .btn {
+  flex: 0 1 auto;
+  min-width: 132px;
 }

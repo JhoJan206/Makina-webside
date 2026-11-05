@@ -8,7 +8,7 @@
 .solicitud-contenido {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 /* ----- Barra de búsqueda y filtros ----- */
@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
+  padding: 14px 18px;
   overflow: visible;
 }
 
@@ -26,11 +26,11 @@
   align-items: center;
   gap: 9px;
   min-width: 220px;
-  height: 42px;
+  height: var(--alto-control);
   padding: 0 14px;
-  background: #f7f7f1;
+  background: #fff;
   border: 1px solid var(--borde);
-  border-radius: 999px;
+  border-radius: var(--radio-control);
   transition: background 0.16s ease, border-color 0.16s ease,
     box-shadow 0.16s ease;
 }
@@ -54,7 +54,7 @@
   background: transparent;
   border: 0;
   outline: 0;
-  font-size: 12.5px;
+  font-size: 13.5px;
 }
 
 .buscador input::placeholder {
@@ -64,21 +64,23 @@
 .filtros-estado {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   padding: 3px;
   overflow-x: auto;
   background: #f2f2ec;
-  border-radius: 999px;
+  border: 1px solid var(--borde-suave);
+  border-radius: var(--radio-control);
 }
 
 .filtro {
-  padding: 7px 11px;
+  min-height: 32px;
+  padding: 6px 10px;
   color: var(--texto-suave);
   background: transparent;
   border: 0;
-  border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 800;
+  border-radius: 7px;
+  font-size: 11.5px;
+  font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.16s ease, color 0.16s ease;
@@ -91,13 +93,24 @@
 .filtro.activo {
   color: var(--amarillo);
   background: var(--negro);
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.2);
+}
+
+.filtro:focus-visible {
+  outline: none;
+  box-shadow: var(--anillo-foco);
 }
 
 .solicitudes-conteo {
   flex: none;
-  color: var(--texto-tenue);
-  font-size: 11px;
-  font-weight: 700;
+  margin-left: auto;
+  padding: 4px 10px;
+  color: var(--texto-suave);
+  background: #f2f2ec;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
@@ -119,7 +132,7 @@
     ) 110px 60px 100px 20px;
   align-items: center;
   gap: 14px;
-  padding: 14px 20px;
+  padding: 14px 22px;
   border-bottom: 1px solid var(--borde-suave);
   transition: background 0.15s ease;
 }
@@ -133,13 +146,13 @@
 }
 
 .solicitud-encabezado {
-  padding: 11px 20px;
+  padding: 11px 22px;
   color: var(--texto-tenue);
   background: #fcfcf9;
   border-bottom: 1px solid var(--borde);
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -164,8 +177,8 @@
 .solicitud-cliente-nombre {
   overflow: hidden;
   color: #222;
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: 13.5px;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -173,7 +186,7 @@
 .solicitud-cliente-sub {
   overflow: hidden;
   color: var(--texto-tenue);
-  font-size: 10.5px;
+  font-size: 11.5px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -184,15 +197,16 @@
 .solicitud-horas {
   overflow: hidden;
   color: var(--texto-suave);
-  font-size: 11.5px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .solicitud-horas {
   color: #333;
-  font-weight: 700;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .solicitud-estado {
@@ -229,9 +243,10 @@
   color: #117a3c;
   background: var(--verde-bg);
   border: 1px solid #bfe6cd;
-  border-radius: 12px;
-  font-size: 12.5px;
-  font-weight: 700;
+  border-left: 3px solid var(--verde);
+  border-radius: var(--radio-control);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .aviso-exito svg {
@@ -244,39 +259,40 @@
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
   align-items: start;
-  gap: 18px;
+  gap: 20px;
 }
 
 .solicitud-columna {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   min-width: 0;
 }
 
 .solicitud-id {
-  padding: 5px 10px;
+  padding: 4px 10px;
   color: var(--texto-suave);
   background: #f2f2ec;
   border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .detalle-lista {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  padding: 18px 20px;
+  gap: 12px;
+  padding: 20px 22px;
 }
 
 .detalle-item {
   display: flex;
-  gap: 11px;
-  padding: 12px;
+  gap: 12px;
+  padding: 14px;
   background: #fbfbf7;
   border: 1px solid var(--borde-suave);
-  border-radius: 12px;
+  border-radius: var(--radio-sm);
 }
 
 .detalle-item-icono {
@@ -305,60 +321,63 @@
 
 .detalle-item-etiqueta {
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .detalle-item strong {
+  margin-top: 2px;
   color: #222;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .detalle-item-nota {
   color: var(--texto-tenue);
-  font-size: 10.5px;
+  font-size: 11.5px;
 }
 
 .detalle-descripcion {
-  padding: 0 20px 20px;
+  padding: 0 22px 22px;
 }
 
 .detalle-descripcion h3 {
-  margin-bottom: 6px;
-  color: #222;
-  font-size: 12px;
-  font-weight: 800;
+  margin-bottom: 8px;
+  color: #3b3b36;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .detalle-descripcion p {
   color: var(--texto-suave);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .detalle-panel-cuerpo {
-  padding: 16px 20px 20px;
+  padding: 18px 22px 22px;
 }
 
 .detalle-ayuda {
   color: var(--texto-suave);
-  font-size: 12.5px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .acciones-estado {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 /* ----- Tarjeta de contacto ----- */
 .contacto-card-cuerpo {
-  padding: 18px 20px 20px;
+  padding: 20px 22px 22px;
 }
 
 .contacto-cabecera {
@@ -382,20 +401,20 @@
   border-radius: 16px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .contacto-cabecera h3 {
   color: #1a1a18;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .contacto-cabecera p {
   margin-top: 2px;
   color: var(--texto-tenue);
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 
 .contacto-datos {
@@ -416,8 +435,8 @@
   align-items: center;
   gap: 5px;
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -430,8 +449,8 @@
 .contacto-datos dd {
   overflow-wrap: anywhere;
   color: #222;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 500;
 }
 
 .contacto-datos dd a {
@@ -457,7 +476,7 @@
   display: flex;
   flex-direction: column;
   margin: 0;
-  padding: 4px 20px 10px;
+  padding: 4px 22px 10px;
 }
 
 .resumen-lista > div {
@@ -474,15 +493,16 @@
 }
 
 .resumen-lista dt {
-  color: var(--texto-tenue);
-  font-size: 11px;
-  font-weight: 600;
+  color: var(--texto-suave);
+  font-size: 12.5px;
+  font-weight: 500;
 }
 
 .resumen-lista dd {
   color: #222;
-  font-size: 11.5px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   text-align: right;
 }
 
@@ -551,8 +571,8 @@
   background: #fff;
   border: 1px solid var(--borde);
   border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 800;
+  font-size: 11.5px;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -581,8 +601,8 @@
   overflow-wrap: break-word;
   color: #141412;
   font-size: clamp(38px, 4.5vw, 64px);
-  font-weight: 800;
-  letter-spacing: -0.055em;
+  font-weight: 700;
+  letter-spacing: -0.035em;
   line-height: 0.98;
 }
 
@@ -636,15 +656,15 @@
 .portal-beneficios strong {
   display: block;
   color: #222;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13.5px;
+  font-weight: 700;
 }
 
 .portal-beneficios small {
   display: block;
   margin-top: 2px;
   color: var(--texto-tenue);
-  font-size: 11.5px;
+  font-size: 12.5px;
   line-height: 1.45;
 }
 
@@ -682,8 +702,8 @@
 .portal-datos small {
   display: block;
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -692,17 +712,17 @@
   display: block;
   margin-top: 2px;
   color: #222;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13.5px;
+  font-weight: 700;
 }
 
 /* ----- Formulario del portal ----- */
 .portal-form-card {
   position: relative;
-  padding: 26px;
+  padding: 28px;
   background: #fff;
   border: 1px solid var(--borde-tarjeta);
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: var(--sombra-alta);
 }
 
@@ -716,15 +736,15 @@
   margin-top: 6px;
   color: #161614;
   font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.035em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   line-height: 1.1;
 }
 
 .portal-form-cabecera > p:last-child {
   margin-top: 6px;
   color: var(--texto-tenue);
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 
 .form-seccion {
@@ -739,13 +759,13 @@
   align-items: center;
   gap: 7px;
   width: 100%;
-  margin-bottom: 10px;
-  padding: 0 0 8px;
-  color: #222;
+  margin-bottom: 12px;
+  padding: 0 0 9px;
+  color: #3b3b36;
   border-bottom: 1px solid var(--borde-suave);
   font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -769,7 +789,7 @@
   align-items: center;
   gap: 6px;
   color: var(--texto-tenue);
-  font-size: 10.5px;
+  font-size: 11.5px;
   line-height: 1.4;
 }
 
@@ -781,7 +801,7 @@
 
 .btn-enviar {
   min-height: 44px;
-  padding: 0 20px;
+  padding: 0 22px;
 }
 
 /* ----- Confirmación ----- */
@@ -812,15 +832,15 @@
   margin-top: 6px;
   color: #161614;
   font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   line-height: 1.1;
 }
 
 .portal-exito-texto {
   margin-top: 8px;
   color: var(--texto-suave);
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.6;
 }
 
@@ -846,16 +866,16 @@
 
 .portal-exito-resumen span {
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .portal-exito-resumen strong {
   color: #222;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13.5px;
+  font-weight: 700;
 }
 
 .portal-exito-nota {
@@ -864,7 +884,7 @@
   gap: 6px;
   margin-top: 16px;
   color: var(--texto-suave);
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 
 .portal-exito-nota svg {
@@ -895,7 +915,7 @@
   padding: 24px 32px 32px;
   color: var(--texto-tenue);
   border-top: 1px solid var(--borde);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* ===== Adaptación ===== */

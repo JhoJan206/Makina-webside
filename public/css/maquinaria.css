@@ -24,7 +24,7 @@
 .maquina-card:hover {
   border-color: #d9d9d0;
   box-shadow: var(--sombra-alta);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 
 .maquina-card-media {
@@ -32,6 +32,7 @@
   height: 190px;
   overflow: hidden;
   background: #efefe9;
+  border-bottom: 1px solid var(--borde-suave);
 }
 
 .maquina-card-media img {
@@ -64,13 +65,14 @@
   top: 14px;
   left: 14px;
   z-index: 1;
-  padding: 5px 10px;
+  padding: 4px 10px;
   color: #fff;
-  background: rgba(17, 17, 17, 0.78);
+  background: rgba(17, 17, 17, 0.8);
   border-radius: 999px;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
   backdrop-filter: blur(6px);
 }
 
@@ -87,7 +89,7 @@
   flex: 1;
   flex-direction: column;
   gap: 16px;
-  padding: 18px;
+  padding: 20px;
 }
 
 .maquina-card-cabecera {
@@ -105,10 +107,10 @@
   margin-top: 3px;
   overflow: hidden;
   color: #1a1a18;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -117,18 +119,19 @@
   flex: none;
   color: #161614;
   font-size: 16px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
   text-align: right;
   white-space: nowrap;
 }
 
 .maquina-card-precio span {
   display: block;
-  margin-top: 1px;
+  margin-top: 2px;
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .maquina-card-datos {
@@ -142,9 +145,9 @@
 
 .maquina-card-datos dt {
   color: var(--texto-tenue);
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -152,8 +155,9 @@
   margin-top: 4px;
   overflow-wrap: anywhere;
   color: #222;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .maquina-card-pie {
@@ -172,15 +176,15 @@
   gap: 7px;
   min-width: 0;
   color: var(--texto-suave);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .operador-mini .avatar-circulo {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  font-size: 9.5px;
+  font-size: 10.5px;
 }
 
 .operador-mini span:last-child {

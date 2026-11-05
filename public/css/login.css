@@ -108,7 +108,7 @@ body {
   padding-bottom: 18px;
   color: var(--negro);
   font-size: 40px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -1px;
   line-height: 1;
   text-align: center;
@@ -155,7 +155,7 @@ label {
   display: block;
   margin-bottom: 8px;
   color: var(--gris);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.4px;
   text-transform: uppercase;
@@ -229,7 +229,7 @@ button {
   padding: 14px;
   color: #fff;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 1.6px;
   text-transform: uppercase;
@@ -265,7 +265,7 @@ button:focus-visible {
 .registro {
   margin-top: 22px;
   color: var(--gris);
-  font-size: 12px;
+  font-size: 12.5px;
   text-align: center;
 }
 
@@ -357,7 +357,7 @@ button:focus-visible {
   margin: 0 0 12px;
   padding: 10px 12px;
   color: #a1251d;
-  font-size: 13px;
+  font-size: 13.5px;
   background: #fdecea;
   border: 1px solid #f6c7c2;
   border-radius: 10px;
