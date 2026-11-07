@@ -1,0 +1,15 @@
+test_cp01_login_correcto (tests.e2e.test_makina.PruebasMakina.test_cp01_login_correcto) ... ok
+test_cp02_login_incorrecto (tests.e2e.test_makina.PruebasMakina.test_cp02_login_incorrecto) ... ok
+test_cp03_home_sin_sesion (tests.e2e.test_makina.PruebasMakina.test_cp03_home_sin_sesion) ... ok
+test_cp04_maquina_placa_repetida (tests.e2e.test_makina.PruebasMakina.test_cp04_maquina_placa_repetida) ... ok
+test_cp05_eliminar_maquina_con_ingresos (tests.e2e.test_makina.PruebasMakina.test_cp05_eliminar_maquina_con_ingresos) ... ok
+test_cp06_crud_operadores_y_clientes (tests.e2e.test_makina.PruebasMakina.test_cp06_crud_operadores_y_clientes) ... ok
+test_cp07_asignar_operador_a_maquina_ocupada (tests.e2e.test_makina.PruebasMakina.test_cp07_asignar_operador_a_maquina_ocupada) ... ok
+test_cp08_ingreso_sin_cliente (tests.e2e.test_makina.PruebasMakina.test_cp08_ingreso_sin_cliente) ... ok
+test_cp09_y_cp10_solicitud_y_cambio_de_estado (tests.e2e.test_makina.PruebasMakina.test_cp09_y_cp10_solicitud_y_cambio_de_estado) ... ok
+test_cp11_vista_telefono (tests.e2e.test_makina.PruebasMakina.test_cp11_vista_telefono) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 22.527s
+
+OK

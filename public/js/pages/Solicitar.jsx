@@ -5,7 +5,6 @@ import {
   BuildingIcon,
   CheckIcon,
   ClockIcon,
-  DollarIcon,
   PhoneIcon,
   SendIcon,
   TruckIcon,
@@ -25,7 +24,7 @@ export default function Solicitar() {
   const [error, setError] = useState('');
   const [claveFormulario, setClaveFormulario] = useState(0);
   const [enviando, setEnviando] = useState(false);
-  const { tipos, equipos, promedio } = resumenTarifas();
+  const { tipos } = resumenTarifas();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -143,29 +142,6 @@ export default function Solicitar() {
               </li>
             </ul>
 
-            <div className="portal-datos">
-              <div>
-                <span className="portal-dato-icono" aria-hidden="true">
-                  <DollarIcon />
-                </span>
-                <div>
-                  <small>Tarifa promedio</small>
-                  <strong>
-                    {formatearMoneda(promedio, false)} / hora
-                  </strong>
-                </div>
-              </div>
-
-              <div>
-                <span className="portal-dato-icono" aria-hidden="true">
-                  <TruckIcon />
-                </span>
-                <div>
-                  <small>Flota disponible</small>
-                  <strong>{equipos} equipos</strong>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="portal-form-card">
