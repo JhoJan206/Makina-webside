@@ -373,9 +373,13 @@ export default function Movimientos() {
                         name="fecha"
                         max={fechaDeHoy()}
                         value={formulario.fecha}
-                        onChange={(event) =>
-                          actualizar('fecha', event.target.value)
-                        }
+                        onChange={(event) => {
+                          // El calendario ya deshabilita los días futuros; si
+                          // se escribe uno a mano, se ajusta a la fecha de hoy.
+                          const valor = event.target.value;
+                          const hoy = fechaDeHoy();
+                          actualizar('fecha', valor && valor > hoy ? hoy : valor);
+                        }}
                         required
                       />
                     </label>
