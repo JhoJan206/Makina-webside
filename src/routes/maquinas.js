@@ -11,8 +11,11 @@ import {
 
 const router = Router();
 
+// Valores del ENUM tipo_maquina (ver supabase/migrations/002_tipos_maquina_nuevos.sql)
+export const TIPOS_MAQUINA = ['Pajarita', 'Bulldozer', 'Excavadora', 'Motoniveladora'];
+
 const esquema = {
-  tipo: campo.opcion(['Pajarita', 'Bulldozer'], { requerido: true }),
+  tipo: campo.opcion(TIPOS_MAQUINA, { requerido: true }),
   placa: campo.texto({ requerido: true, max: 20 }),
   valor_hora: campo.numero({ requerido: true, min: 0 }),
   imagen: campo.texto({ max: 500 }),

@@ -54,6 +54,8 @@ export const crudMaquinas = {
       opciones: [
         { valor: 'Pajarita', texto: 'Retroexcavadora (Pajarita)' },
         { valor: 'Bulldozer', texto: 'Bulldozer' },
+        { valor: 'Excavadora', texto: 'Excavadora' },
+        { valor: 'Motoniveladora', texto: 'Motoniveladora' },
       ],
     },
     {
