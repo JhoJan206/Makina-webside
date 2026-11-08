@@ -17,6 +17,19 @@ export class HttpError extends Error {
   }
 }
 
+// Zona horaria del negocio. El servidor (Vercel) corre en UTC: sin esto,
+const ZONA_HORARIA = 'America/Bogota';
+
+// Fecha de hoy (AAAA-MM-DD) en la zona horaria del negocio
+export function fechaDeHoy() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: ZONA_HORARIA,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
+}
+
 const vacio = (valor) =>
   valor === undefined || valor === null || String(valor).trim() === '';
 
@@ -72,7 +85,8 @@ export const campo = {
     return numero;
   }),
 
-  fecha: regla((valor) => {
+  // { noFutura: true } rechaza fechas posteriores a hoy
+  fecha: regla((valor, { noFutura }) => {
     const texto = String(valor).trim();
     const fecha = new Date(`${texto}T00:00:00Z`);
     if (
@@ -81,6 +95,10 @@ export const campo = {
       fecha.toISOString().slice(0, 10) !== texto
     ) {
       throw new Error('debe ser una fecha válida (AAAA-MM-DD)');
+    }
+    // AAAA-MM-DD: la comparación de texto respeta el orden cronológico
+    if (noFutura && texto > fechaDeHoy()) {
+      throw new Error('no puede ser posterior a hoy');
     }
     return texto;
   }),
