@@ -19,3 +19,6 @@ yarn-error.log*
 
 # Claude Code
 .claude/
+
+# Base local de las pruebas de Selenium
+tests/e2e/.bd/

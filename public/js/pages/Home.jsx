@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar.jsx';
 import StatCard from '../components/StatCard.jsx';
 import Topbar from '../components/Topbar.jsx';
 import {
+  ArrowDownIcon,
   ArrowRightIcon,
   ClipboardIcon,
   ClockIcon,
@@ -72,7 +73,7 @@ export default function Home() {
               etiqueta="Egresos del mes"
               valor={formatearMoneda(resumen.egresos)}
               detalle="Costos operativos"
-              Icono={TrendingUpIcon}
+              Icono={ArrowDownIcon}
               tono="rojo"
             />
             <StatCard

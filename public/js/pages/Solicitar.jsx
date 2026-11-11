@@ -9,6 +9,7 @@ import {
   SendIcon,
   TruckIcon,
 } from '../components/Icons.jsx';
+import { fechaDeHoy } from '../data/asignaciones.js';
 import { formatearMoneda, tipoMaquinaVisible } from '../data/datos.js';
 import {
   crearSolicitud,
@@ -17,7 +18,9 @@ import {
   valorEstimadoSolicitud,
 } from '../data/solicitudes.js';
 
-const fechaMinima = new Date().toISOString().slice(0, 10);
+// Fecha de hoy en la hora local (toISOString usa UTC y en Colombia, desde
+// las 7 p. m., ya daría el día siguiente)
+const fechaMinima = fechaDeHoy();
 
 export default function Solicitar() {
   const [enviada, setEnviada] = useState(null);

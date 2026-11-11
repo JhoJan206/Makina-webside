@@ -7,6 +7,11 @@ import { esquemaCliente } from './clientes.js';
 
 const router = Router();
 
+// "Hoy" en la hora de la empresa (Vercel corre en UTC). en-CA da AAAA-MM-DD.
+function fechaDeHoyEnColombia() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bogota' }).format(new Date());
+}
+
 router.get('/tarifas', async (req, res) => {
   const tarifas = await tarifasPorTipo();
   const equipos = tarifas.reduce((total, t) => total + t.equipos, 0);
@@ -31,6 +36,10 @@ router.post('/solicitudes', async (req, res) => {
     horas_estimadas: campo.positivo({ requerido: true }),
     descripcion: campo.texto({ max: 2000 }),
   });
+
+  if (datos.fecha_requerida < fechaDeHoyEnColombia()) {
+    throw new HttpError(400, 'La fecha requerida no puede ser anterior a hoy.');
+  }
 
   if (datos.horas_estimadas > 10000) {
     throw new HttpError(400, 'La cantidad de horas no es válida.');

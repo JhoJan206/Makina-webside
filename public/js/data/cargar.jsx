@@ -2,6 +2,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { api } from '../api/cliente.js';
+import Ayuda from '../components/Ayuda.jsx';
 import { llenarDatos } from './datos.js';
 import { llenarSolicitudes, llenarTarifas } from './solicitudes.js';
 
@@ -75,6 +76,7 @@ export async function montar(Vista, { cargar = cargarDatos } = {}) {
     root.render(
       <StrictMode>
         <Vista />
+        <Ayuda />
       </StrictMode>,
     );
   }

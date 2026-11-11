@@ -72,6 +72,27 @@ export function TruckIcon() {
   );
 }
 
+// Excavadora de orugas, la misma silueta del logo de MAKINA (mira a la izquierda)
+export function ExcavatorIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="9" y="17.5" width="14" height="4" rx="2" />
+      <path d="M11 17.5V14h3.5V9.5H18l1.5 3.5H22v4.5" />
+      <path d="M14.5 11 8 4 5 5.5l-.5 7" />
+      <path d="M4.5 12.5 2.6 15.6a2 2 0 0 0 1.7 3H8l-3.5-6.1" />
+    </svg>
+  );
+}
+
 export function UsersIcon() {
   return (
     <svg
@@ -334,6 +355,41 @@ export function ArrowRightIcon() {
       aria-hidden="true"
     >
       <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+export function ArrowDownIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 5v14M6 13l6 6 6-6" />
+    </svg>
+  );
+}
+
+export function HelpIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 9a3 3 0 1 1 4.2 2.75c-.75.33-1.2 1.07-1.2 1.88V14" />
+      <path d="M12 18h.01" />
     </svg>
   );
 }

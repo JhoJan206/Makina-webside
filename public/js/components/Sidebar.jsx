@@ -1,15 +1,15 @@
 import {
   BuildingIcon,
   ClipboardIcon,
+  ExcavatorIcon,
   HomeIcon,
-  TruckIcon,
   UsersIcon,
   WalletIcon,
 } from './Icons.jsx';
 
 const enlaces = [
   { texto: 'Inicio', Icono: HomeIcon, href: '/home' },
-  { texto: 'Maquinaria', Icono: TruckIcon, href: '/maquinaria' },
+  { texto: 'Maquinaria', Icono: ExcavatorIcon, href: '/maquinaria' },
   { texto: 'Operadores', Icono: UsersIcon, href: '/operadores' },
   { texto: 'Clientes', Icono: BuildingIcon, href: '/clientes' },
   { texto: 'Solicitudes', Icono: ClipboardIcon, href: '/solicitudes' },
