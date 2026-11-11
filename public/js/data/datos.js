@@ -26,6 +26,7 @@ export const egresos = [];
 const IMAGENES_POR_TIPO = {
   Pajarita: '/img/maquinaria/retroexcavadora.jpg',
   Bulldozer: '/img/maquinaria/excavadora.jpg',
+  Excavadora: '/img/maquinaria/excavadora.jpg',
 };
 
 export function normalizarMaquina(maquina) {

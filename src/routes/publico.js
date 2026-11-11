@@ -4,6 +4,7 @@ import { campo, HttpError, validar } from '../middleware/validar.js';
 import { tarifasPorTipo } from '../models/maquinas.js';
 import { crearSolicitud } from '../models/solicitudes.js';
 import { esquemaCliente } from './clientes.js';
+import { TIPOS_MAQUINA } from './maquinas.js';
 
 const router = Router();
 
@@ -31,7 +32,7 @@ router.post('/solicitudes', async (req, res) => {
   const datos = validar(req.body, {
     ...esquemaCliente,
     telefono: campo.texto({ requerido: true, max: 20 }),
-    tipo_maquina: campo.opcion(['Pajarita', 'Bulldozer'], { requerido: true }),
+    tipo_maquina: campo.opcion(TIPOS_MAQUINA, { requerido: true }),
     fecha_requerida: campo.fecha({ requerido: true }),
     horas_estimadas: campo.positivo({ requerido: true }),
     descripcion: campo.texto({ max: 2000 }),

@@ -202,6 +202,12 @@ export default function Movimientos() {
       return;
     }
 
+    // Fechas AAAA-MM-DD: la comparación de texto respeta el orden cronológico
+    if (formulario.fecha > fechaDeHoy()) {
+      setError('La fecha no puede ser posterior a hoy.');
+      return;
+    }
+
     if (!Number.isFinite(idMaquina) || idMaquina <= 0) {
       setError('Selecciona la máquina del movimiento.');
       return;
@@ -365,10 +371,15 @@ export default function Movimientos() {
                       <input
                         type="date"
                         name="fecha"
+                        max={fechaDeHoy()}
                         value={formulario.fecha}
-                        onChange={(event) =>
-                          actualizar('fecha', event.target.value)
-                        }
+                        onChange={(event) => {
+                          // El calendario ya deshabilita los días futuros; si
+                          // se escribe uno a mano, se ajusta a la fecha de hoy.
+                          const valor = event.target.value;
+                          const hoy = fechaDeHoy();
+                          actualizar('fecha', valor && valor > hoy ? hoy : valor);
+                        }}
                         required
                       />
                     </label>

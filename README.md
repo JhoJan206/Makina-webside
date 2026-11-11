@@ -44,6 +44,7 @@ makina-webside/
 │
 ├── supabase/
 │   ├── migrations/001_esquema.sql  # Esquema de la base de datos
+│   ├── migrations/002_tipos_maquina_nuevos.sql  # Tipos Excavadora y Motoniveladora
 │   └── seed.sql                    # Datos de ejemplo (opcional)
 │
 ├── .env.example          # Plantilla de variables de entorno
@@ -162,7 +163,8 @@ Copia `.env.example` como `.env` (ignorado por Git). En Vercel se configuran en
 
 1. Crea un proyecto en [supabase.com](https://supabase.com) y guarda la contraseña
    de la base de datos.
-2. En **SQL Editor** ejecuta el contenido de `supabase/migrations/001_esquema.sql`.
+2. En **SQL Editor** ejecuta, en orden, `supabase/migrations/001_esquema.sql` y
+   `supabase/migrations/002_tipos_maquina_nuevos.sql` (tipos Excavadora y Motoniveladora).
 3. (Opcional) Ejecuta `supabase/seed.sql` para cargar los datos de ejemplo. Los
    ingresos y egresos quedan en el mes actual para que el dashboard muestre datos.
    También crea un **usuario de prueba**:

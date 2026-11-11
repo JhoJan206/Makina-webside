@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     id_maquina: campo.id({ requerido: true }),
     valor: campo.numero({ requerido: true, min: 0 }),
     descripcion: campo.texto({ max: 500 }),
-    fecha: campo.fecha({ requerido: true }),
+    fecha: campo.fecha({ requerido: true, noFutura: true }),
   };
 
   if (tipo === 'egreso') {
